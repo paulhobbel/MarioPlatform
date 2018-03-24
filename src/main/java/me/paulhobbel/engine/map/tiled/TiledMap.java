@@ -4,7 +4,13 @@ import me.paulhobbel.engine.map.Map;
 
 public class TiledMap extends Map {
 
-    public TiledMap(String mapFile) {
+    private TiledMapTileSets tilesets;
 
+    public TiledMap() {
+        tilesets = new TiledMapTileSets();
+    }
+
+    public TiledMapTileSets getTileSets() {
+        return tilesets;
     }
 }

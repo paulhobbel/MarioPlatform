@@ -1,14 +1,20 @@
 package me.paulhobbel.engine.map;
 
-import java.awt.*;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Map {
-    private HashMap<String, Layer> layers = new HashMap<>();
+    private ArrayList<MapLayer> layers = new ArrayList<>();
+    private MapProperties properties;
 
-    public void draw(Graphics2D g2d) {
-        for(Layer layer : layers.values()) {
-            layer.draw(g2d);
-        }
+    public Map() {
+        properties = new MapProperties();
+    }
+
+    public ArrayList<MapLayer> getLayers() {
+        return layers;
+    }
+
+    public MapProperties getProperties() {
+        return properties;
     }
 }

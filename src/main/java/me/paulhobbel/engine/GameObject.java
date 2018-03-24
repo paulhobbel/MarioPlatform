@@ -1,7 +1,10 @@
 package me.paulhobbel.engine;
 
+import me.paulhobbel.engine.window.input.InputManager;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -10,9 +13,12 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class GameObject {
-    private Point2D position;
-    private int frame = 0;
-    private BufferedImage[] sprites;
+
+    protected World world;
+    protected Point2D position;
+    protected Point2D speed = new Point2D.Double(0, 0);
+    protected int frame = 0;
+    protected BufferedImage[] sprites;
 
     private static HashMap<String, BufferedImage[]> imageCache = new HashMap<>();
 
@@ -37,6 +43,7 @@ public class GameObject {
             }
 
             sprites = imageCache.get(spriteFile);
+            world = Engine.getInstance().getWorld();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +54,7 @@ public class GameObject {
      * @param elapsedTime Elapsed time since last update
      */
     public void update(double elapsedTime) {
-        frame = new Random().nextInt(sprites.length);
+        //frame = new Random().nextInt(sprites.length);
     }
 
     public void draw(Graphics2D g2d) {

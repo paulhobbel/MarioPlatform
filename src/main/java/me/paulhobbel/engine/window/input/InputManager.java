@@ -45,6 +45,9 @@ public class InputManager {
     public void addKeyListener(KeyListener listener) {
         panel.addKeyListener(listener);
     }
+    public void addMouseListener(MouseListener listener) {
+        panel.addMouseListener(listener);
+    }
 
     public boolean isKeyPressed(int keyCode) {
         return keys[keyCode];
