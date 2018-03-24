@@ -1,6 +1,7 @@
 package me.paulhobbel.engine.map.tiled;
 
 import me.paulhobbel.engine.map.MapProperties;
+import me.paulhobbel.engine.map.tiled.strategies.OrthogonalTiledMapRenderStrategy;
 
 import javax.imageio.ImageIO;
 import javax.json.Json;
@@ -23,11 +24,17 @@ public class TiledMapLoader {
     public TiledMap loadTileMap(JsonObject object) {
         TiledMap map = new TiledMap();
 
-        String orientation = object.getString("orientation");
+        String orientation = object.getString("orientation", null);
         int mapWidth = object.getInt("width", 0);
         int mapHeight = object.getInt("height", 0);
         int tileWidth = object.getInt("tilewidth", 0);
         int tileHeight = object.getInt("tileheight", 0);
+
+        if(orientation != null) {
+            if(orientation.equals("orthogonal")) {
+                map.setStrategy(new OrthogonalTiledMapRenderStrategy());
+            }
+        }
 
         MapProperties mapProperties = map.getProperties();
         if(orientation != null) {

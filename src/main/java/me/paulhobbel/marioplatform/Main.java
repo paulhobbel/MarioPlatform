@@ -1,9 +1,12 @@
 package me.paulhobbel.marioplatform;
 
 import me.paulhobbel.engine.Engine;
-import me.paulhobbel.engine.map.tiled.TiledMap;
-import me.paulhobbel.engine.map.tiled.TiledMapLoader;
+import me.paulhobbel.engine.GameObject;
+import me.paulhobbel.engine.World;
+import me.paulhobbel.engine.component.Map;
 import me.paulhobbel.engine.window.WindowManager;
+import me.paulhobbel.marioplatform.entities.Player;
+import me.paulhobbel.marioplatform.maps.Level1;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -16,12 +19,11 @@ public class Main {
     public Main() {
         WindowManager.getInstance().createWindow(new Dimension(1280, 672), "Test");
 
-        TiledMapLoader loader = new TiledMapLoader();
-        TiledMap map = loader.load("/maps/level1.json");
-
         Engine engine = Engine.getInstance();
-        engine.getWorld().setMap(map);
-        engine.getWorld().addObject(new Player(new Point2D.Double(40, 40)), 0);
+        World world = engine.getWorld();
+
+        world.addObject(new Level1());
+        world.addObject(new Player(new Point2D.Double(40, 192)));
         engine.start();
     }
 }

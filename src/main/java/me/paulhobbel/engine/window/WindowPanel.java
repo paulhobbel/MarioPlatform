@@ -1,14 +1,11 @@
 package me.paulhobbel.engine.window;
 
 import me.paulhobbel.engine.Engine;
-import me.paulhobbel.engine.graphics.Camera;
-import me.paulhobbel.engine.map.tiled.TiledMap;
-import me.paulhobbel.engine.map.tiled.TiledMapLoader;
-import me.paulhobbel.engine.map.tiled.renderers.OrthogonalTiledMapRenderer;
+import me.paulhobbel.engine.graphics.renderer.MapRenderer;
+import me.paulhobbel.engine.graphics.renderer.SpriteRenderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 public class WindowPanel extends JPanel {
 
@@ -22,6 +19,9 @@ public class WindowPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        Engine.getInstance().getWorld().draw(g2d);
+        g2d.setTransform(Engine.getInstance().getWorld().getCamera().getTransform());
+
+        MapRenderer.getInstance().render(g2d);
+        SpriteRenderer.getInstance().render(g2d);
     }
 }

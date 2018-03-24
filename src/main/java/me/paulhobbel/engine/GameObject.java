@@ -1,52 +1,80 @@
 package me.paulhobbel.engine;
 
-import me.paulhobbel.engine.window.input.InputManager;
+import me.paulhobbel.engine.component.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.ArrayList;
 
 public class GameObject {
 
-    protected World world;
-    protected Point2D position;
-    protected Point2D speed = new Point2D.Double(0, 0);
-    protected int frame = 0;
-    protected BufferedImage[] sprites;
+    private Point2D position;
+    private double scale;
+    private double rotation;
 
-    private static HashMap<String, BufferedImage[]> imageCache = new HashMap<>();
+    private ArrayList<Component> components = new ArrayList<>();
 
-    public GameObject(Point2D position, String spriteFile, int rows, int columns) {
-        this.position = position;
+    public GameObject() {
+        this(new Point2D.Double(0, 0));
+    }
 
-        try {
-            if(!imageCache.containsKey(spriteFile)) {
-                BufferedImage img = ImageIO.read(getClass().getResource(spriteFile));
+    public GameObject(Point2D initialPosition) {
+        position = initialPosition;
+        scale = 1;
+        rotation = 0;
+    }
 
-                BufferedImage[] sprites = new BufferedImage[rows * columns];
+    public void addComponent(Component component) {
+        components.add(component);
+        component.start();
+    }
 
-                for(int row = 0; row < rows; row++) {
-                    for(int column = 0; column < columns; column++) {
-                        sprites[row+rows*column] = img.getSubimage(
-                                row * (img.getWidth()/rows),column * (img.getHeight()/columns),
-                                img.getWidth()/rows,img.getHeight()/columns);
-                    }
-                }
+    public void removeComponent(Component component) {
+        component.stop();
+        components.remove(component);
+    }
 
-                imageCache.put(spriteFile, sprites);
-            }
+    public Point2D getPosition() {
+        return position;
+    }
 
-            sprites = imageCache.get(spriteFile);
-            world = Engine.getInstance().getWorld();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void setScale(int scale) {
+        this.scale = scale;
+    }
+
+    public void start() {
+        for(Component component : components) {
+            component.start();
         }
+    }
+
+    protected void resume(){
+        for(Component component : components)
+            component.resume();
+    }
+
+    protected void update(){
+        for(Component component : components){
+            component.update();
+        }
+    }
+
+    public void stop() {
+        for(Component component : components) {
+            component.stop();
+        }
+    }
+
+    public void translate(double dx, double dy) {
+        position.setLocation(position.getX() + dx,  position.getY() + dy);
+    }
+
+    public AffineTransform getTransform() {
+        AffineTransform tx = new AffineTransform();
+        tx.scale(scale, scale);
+        tx.translate(position.getX(), position.getY());
+
+        return tx;
     }
 
     /**
@@ -55,14 +83,5 @@ public class GameObject {
      */
     public void update(double elapsedTime) {
         //frame = new Random().nextInt(sprites.length);
-    }
-
-    public void draw(Graphics2D g2d) {
-        AffineTransform tx = new AffineTransform();
-        tx.scale(3, 3);
-        tx.translate(position.getX(), position.getY());
-        tx.translate(0, -sprites[frame].getHeight());
-
-        g2d.drawImage(sprites[frame], tx, null);
     }
 }
