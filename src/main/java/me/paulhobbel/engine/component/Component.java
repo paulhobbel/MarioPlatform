@@ -16,10 +16,10 @@ public class Component {
     public void start() {
     }
 
-    public void pause() {
+    public void resume() {
     }
 
-    public void resume() {
+    public void pause() {
     }
 
     public void stop() {

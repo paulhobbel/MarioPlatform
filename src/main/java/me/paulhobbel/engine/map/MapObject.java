@@ -1,6 +1,8 @@
 package me.paulhobbel.engine.map;
 
-public class MapObject {
+import java.awt.Shape;
+
+public abstract class MapObject {
     private String name = "";
     private float opacity = 1.0f;
     private boolean visible = true;
@@ -33,4 +35,6 @@ public class MapObject {
     public MapProperties getProperties() {
         return properties;
     }
+
+    public abstract Shape getShape();
 }

@@ -8,13 +8,14 @@ public class MapLayer {
     private boolean visible;
 
     private MapProperties properties;
-    private ArrayList<MapObject> objects = new ArrayList<>();
+    private MapObjects objects;
 
     public MapLayer() {
         name = "";
         opacity = 1.0f;
         visible = true;
         properties = new MapProperties();
+        objects = new MapObjects();
     }
 
     /**
@@ -65,7 +66,7 @@ public class MapLayer {
     /**
      * @return the objects of the layer.
      */
-    public ArrayList<MapObject> getObjects() {
+    public MapObjects getObjects() {
         return objects;
     }
 

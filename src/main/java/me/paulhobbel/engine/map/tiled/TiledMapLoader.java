@@ -2,12 +2,19 @@ package me.paulhobbel.engine.map.tiled;
 
 import javafx.scene.paint.Color;
 import me.paulhobbel.engine.map.MapLayer;
+import me.paulhobbel.engine.map.MapObject;
+import me.paulhobbel.engine.map.MapObjects;
 import me.paulhobbel.engine.map.MapProperties;
+import me.paulhobbel.engine.map.objects.EllipseMapObject;
+import me.paulhobbel.engine.map.objects.PointMapObject;
+import me.paulhobbel.engine.map.objects.PolygonMapObject;
+import me.paulhobbel.engine.map.objects.RectangleMapObject;
 import me.paulhobbel.engine.map.tiled.TiledMapTileLayer.Cell;
 import me.paulhobbel.engine.map.tiled.strategies.OrthogonalTiledMapRenderStrategy;
 
 import javax.imageio.ImageIO;
 import javax.json.*;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map.Entry;
@@ -182,9 +189,65 @@ public class TiledMapLoader {
                     object.getJsonObject("properties"), object.getJsonObject("propertytypes"));
         }
 
-        System.err.println("[TiledMapLoader] ObjectGroups are not fully supported yet!");
+        JsonArray objects = object.getJsonArray("objects");
+        for(int i = 0; i < objects.size(); i++) {
+            loadObject(layer.getObjects(), objects.getJsonObject(i));
+        }
 
         map.getLayers().add(layer);
+    }
+
+    private void loadObject(MapObjects objects, JsonObject object) {
+        int x = object.getInt("x", 0);
+        int y = object.getInt("y", 0);
+
+        float width = object.getInt("width", 0);
+        float height = object.getInt("height", 0);
+
+        MapObject mapObject;
+
+        if(object.containsKey("ellipse")) {
+            mapObject = new EllipseMapObject(x, y, width, height);
+        } else if(object.containsKey("polygon")) {
+            Polygon polygon = new Polygon();
+
+            JsonArray points = object.getJsonArray("polygon");
+            for(int i = 0; i < points.size(); i++) {
+                JsonObject point = points.getJsonObject(i);
+                polygon.addPoint(x + point.getInt("x"), y + point.getInt("y"));
+            }
+
+            mapObject = new PolygonMapObject(polygon);
+        } else if(object.containsKey("point")) {
+            mapObject = new PointMapObject((double) x, (double) y);
+        } else {
+            mapObject = new RectangleMapObject(x, y, width, height);
+        }
+
+        mapObject.setName(object.getString("name", null));
+        mapObject.setVisible(object.getBoolean("visible", true));
+
+        String type = object.getString("type", null);
+        if (type != null) {
+            mapObject.getProperties().put("type", type);
+        }
+
+        int id = object.getInt("id", 0);
+        if (id != 0) {
+            mapObject.getProperties().put("id", id);
+        }
+
+        mapObject.getProperties().put("x", x);
+        mapObject.getProperties().put("y", y);
+        mapObject.getProperties().put("width", width);
+        mapObject.getProperties().put("height", height);
+
+        if(object.containsKey("properties")) {
+            loadProperties(mapObject.getProperties(),
+                    object.getJsonObject("properties"), object.getJsonObject("propertytypes"));
+        }
+
+        objects.add(mapObject);
     }
 
     /**
