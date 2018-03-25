@@ -46,12 +46,16 @@ public class GameObject {
         return position;
     }
 
-    public void setScale(int scale) {
+    public void setScale(double scale) {
         this.scale = scale;
     }
 
     public Body getBody() {
         return body;
+    }
+
+    public double getScale() {
+        return scale;
     }
 
     public void start() {

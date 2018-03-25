@@ -15,7 +15,7 @@ public class Main {
     }
 
     public Main() {
-        WindowManager.getInstance().createWindow(new Dimension(1280, 672), "Test");
+        WindowManager.getInstance().createWindow(new Dimension(816, 672), "Test");
 
         Engine engine = Engine.getInstance();
         World world = engine.getWorld();

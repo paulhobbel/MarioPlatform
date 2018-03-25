@@ -7,11 +7,11 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 
-public class Ground extends GameObject {
-    public Ground(Point2D position, Shape shape) {
+public class Pipe extends GameObject {
+    public Pipe(Point2D position, Shape shape) {
         super(position);
 
-        addComponent(new DebugComponent(shape, Color.MAGENTA, this));
+        addComponent(new DebugComponent(shape, Color.GREEN, this));
         setScale(3);
     }
 }
