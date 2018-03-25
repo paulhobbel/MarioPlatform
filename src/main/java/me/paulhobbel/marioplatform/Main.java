@@ -21,7 +21,7 @@ public class Main {
         World world = engine.getWorld();
 
         world.addObject(new Level1());
-        world.addObject(new Player(new Point2D.Double(40, 192)));
+        world.addObject(new Player(new Point2D.Double(0, 0)));
         engine.start();
     }
 }

@@ -5,6 +5,8 @@ import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.World;
 import me.paulhobbel.engine.component.SpriteComponent;
 import me.paulhobbel.engine.window.input.InputManager;
+import org.dyn4j.geometry.Geometry;
+import org.dyn4j.geometry.MassType;
 
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
@@ -20,6 +22,10 @@ public class Player extends GameObject {
         sprite = new SpriteComponent(0, "/sprites/mario.png", 12, 1, this);
 
         addComponent(sprite);
+
+        body.addFixture(Geometry.createCircle(0.15));
+        body.setMass(MassType.NORMAL);
+
         setScale(3);
     }
 
@@ -38,7 +44,7 @@ public class Player extends GameObject {
         }
 
         double newX = speed.getX() * elapsedTime;
-        translate(newX, 0);
+        body.translate(newX / 45, 0);
 
         if(Math.abs(Math.round(newX)) > 0) {
             sprite.setFrame((int) ((System.currentTimeMillis() / 100) % 4));
@@ -48,7 +54,7 @@ public class Player extends GameObject {
 
         World world = Engine.getInstance().getWorld();
 
-        if(getPosition().getX()*3 - world.getCamera().getPosition().getX() > 240) {
+        if(body.getTransform().getTranslationX()*3 - world.getCamera().getPosition().getX() > 240) {
             world.getCamera().getPosition().setLocation(getPosition().getX()*3 - 240, 0);
         }
     }

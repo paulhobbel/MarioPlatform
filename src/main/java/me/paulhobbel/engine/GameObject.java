@@ -1,6 +1,9 @@
 package me.paulhobbel.engine;
 
 import me.paulhobbel.engine.component.Component;
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.geometry.MassType;
+import org.dyn4j.geometry.Transform;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -12,6 +15,8 @@ public class GameObject {
     private double scale;
     private double rotation;
 
+    protected Body body;
+
     private ArrayList<Component> components = new ArrayList<>();
 
     public GameObject() {
@@ -22,6 +27,9 @@ public class GameObject {
         position = initialPosition;
         scale = 1;
         rotation = 0;
+        body = new Body();
+        body.setMass(MassType.INFINITE);
+        body.translate(initialPosition.getX(), initialPosition.getY());
     }
 
     public void addComponent(Component component) {
@@ -40,6 +48,10 @@ public class GameObject {
 
     public void setScale(int scale) {
         this.scale = scale;
+    }
+
+    public Body getBody() {
+        return body;
     }
 
     public void start() {
@@ -71,8 +83,14 @@ public class GameObject {
 
     public AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
-        tx.scale(scale, scale);
-        tx.translate(position.getX(), position.getY());
+
+        tx.translate(
+                body.getTransform().getTranslationX() * scale * 45,
+                body.getTransform().getTranslationY() * scale * 45
+        );
+        tx.rotate(body.getTransform().getRotation());
+        tx.scale(scale, -scale);
+        //tx.translate(position.getX(), position.getY());
 
         return tx;
     }
