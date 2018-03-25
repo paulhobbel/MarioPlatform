@@ -12,7 +12,7 @@ public class TiledMapTileLayer extends MapLayer {
 
     private Cell[][] cells;
 
-    public TiledMapTileLayer(int width, int height, int tileWidth, int tileHeight) {
+    TiledMapTileLayer(int width, int height, int tileWidth, int tileHeight) {
         super();
         this.width = width;
         this.height = height;
@@ -21,22 +21,40 @@ public class TiledMapTileLayer extends MapLayer {
         cells = new Cell[width][height];
     }
 
+    /**
+     * @return the width of the layer.
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * @return the height of the layer.
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * @return the tile width of the layer.
+     */
     public int getTileWidth() {
         return tileWidth;
     }
 
+    /**
+     * @return the tile height of the layer.
+     */
     public int getTileHeight() {
         return tileHeight;
     }
 
+    /**
+     * Set a cell at a given x and y
+     * @param x The x
+     * @param y The y
+     * @param cell The cell to add
+     */
     public void setCell(int x, int y, Cell cell) {
         // Check x and y
         if(x < 0 || x >= width) return;
@@ -45,6 +63,12 @@ public class TiledMapTileLayer extends MapLayer {
         cells[x][y] = cell;
     }
 
+    /**
+     * Get a cell at a given x and y
+     * @param x The x
+     * @param y The y
+     * @return a cell of the layer at given x and y
+     */
     public Cell getCell(int x, int y) {
         // Check x and y
         if(x < 0 || x >= width) return null;

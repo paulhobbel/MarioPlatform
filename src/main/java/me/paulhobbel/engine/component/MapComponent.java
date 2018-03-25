@@ -22,7 +22,7 @@ public class MapComponent extends Component {
 
     @Override
     public void pause() {
-        super.pause();
+        MapRenderer.getInstance().setMap(null);
     }
 
     public TiledMap getMap() {
