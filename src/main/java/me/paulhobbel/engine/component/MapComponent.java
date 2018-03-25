@@ -5,11 +5,11 @@ import me.paulhobbel.engine.graphics.renderer.MapRenderer;
 import me.paulhobbel.engine.map.tiled.TiledMap;
 import me.paulhobbel.engine.map.tiled.TiledMapLoader;
 
-public class Map extends Component {
+public class MapComponent extends Component {
 
     TiledMap map;
 
-    public Map(String mapFile, GameObject parent) {
+    public MapComponent(String mapFile, GameObject parent) {
         super(parent);
         TiledMapLoader loader = new TiledMapLoader();
         map = loader.load(mapFile);

@@ -1,13 +1,13 @@
 package me.paulhobbel.engine.graphics.renderer;
 
-import me.paulhobbel.engine.component.Map;
+import me.paulhobbel.engine.component.MapComponent;
 import me.paulhobbel.engine.graphics.Renderer;
 
 import java.awt.*;
 
 public class MapRenderer implements Renderer {
 
-    private Map map;
+    private MapComponent map;
 
     private static MapRenderer instance;
 
@@ -16,7 +16,7 @@ public class MapRenderer implements Renderer {
         return instance;
     }
 
-    public void setMap(Map map) {
+    public void setMap(MapComponent map) {
         this.map = map;
     }
 

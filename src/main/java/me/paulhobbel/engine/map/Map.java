@@ -1,7 +1,5 @@
 package me.paulhobbel.engine.map;
 
-import me.paulhobbel.engine.map.tiled.strategies.OrthogonalTiledMapRenderStrategy;
-
 import java.util.ArrayList;
 
 public class Map {
@@ -10,23 +8,36 @@ public class Map {
     private ArrayList<MapLayer> layers = new ArrayList<>();
     private MapProperties properties;
 
-    public Map() {
+    protected Map() {
         properties = new MapProperties();
     }
 
+    /**
+     * @return the layers of the map.
+     */
     public ArrayList<MapLayer> getLayers() {
         return layers;
     }
 
+    /**
+     * @return the properties of the map.
+     */
     public MapProperties getProperties() {
         return properties;
     }
 
-    public MapRenderStrategy getStrategy() {
-        return strategy;
-    }
-
+    /**
+     * Set the render strategy of the map.
+     * @param strategy RenderStrategy of this map
+     */
     public void setStrategy(MapRenderStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    /**
+     * @return the render strategy of the map.
+     */
+    public MapRenderStrategy getStrategy() {
+        return strategy;
     }
 }

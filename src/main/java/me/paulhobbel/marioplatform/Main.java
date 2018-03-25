@@ -1,9 +1,7 @@
 package me.paulhobbel.marioplatform;
 
 import me.paulhobbel.engine.Engine;
-import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.World;
-import me.paulhobbel.engine.component.Map;
 import me.paulhobbel.engine.window.WindowManager;
 import me.paulhobbel.marioplatform.entities.Player;
 import me.paulhobbel.marioplatform.maps.Level1;

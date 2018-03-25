@@ -3,7 +3,7 @@ package me.paulhobbel.marioplatform.entities;
 import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.World;
-import me.paulhobbel.engine.component.Sprite;
+import me.paulhobbel.engine.component.SpriteComponent;
 import me.paulhobbel.engine.window.input.InputManager;
 
 import java.awt.event.KeyEvent;
@@ -13,11 +13,11 @@ import java.awt.geom.Point2D;
 public class Player extends GameObject {
 
     private Point2D speed = new Point2D.Double(0, 0);
-    private Sprite sprite;
+    private SpriteComponent sprite;
 
     public Player(Point2D position) {
         super(position);
-        sprite = new Sprite(0, "/sprites/mario.png", 12, 1, this);
+        sprite = new SpriteComponent(0, "/sprites/mario.png", 12, 1, this);
 
         addComponent(sprite);
         setScale(3);

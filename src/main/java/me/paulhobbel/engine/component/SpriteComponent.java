@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Sprite extends Component {
+public class SpriteComponent extends Component {
 
     private int layer;
     private int frame = 0;
@@ -16,11 +16,11 @@ public class Sprite extends Component {
 
     private static HashMap<String, BufferedImage[]> imageCache = new HashMap<>();
 
-    public Sprite(int layer, String spriteFile, GameObject parent) {
+    public SpriteComponent(int layer, String spriteFile, GameObject parent) {
         this(layer, spriteFile, 1, 1, parent);
     }
 
-    public Sprite(int layer, String spriteFile, int rows, int columns, GameObject parent) {
+    public SpriteComponent(int layer, String spriteFile, int rows, int columns, GameObject parent) {
         super(parent);
 
         this.layer = layer;

@@ -1,15 +1,16 @@
 package me.paulhobbel.engine.map.tiled;
 
+import javafx.scene.paint.Color;
+import me.paulhobbel.engine.map.MapLayer;
 import me.paulhobbel.engine.map.MapProperties;
+import me.paulhobbel.engine.map.tiled.TiledMapTileLayer.Cell;
 import me.paulhobbel.engine.map.tiled.strategies.OrthogonalTiledMapRenderStrategy;
 
 import javax.imageio.ImageIO;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import javax.json.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Map.Entry;
 
 public class TiledMapLoader {
 
@@ -21,7 +22,7 @@ public class TiledMapLoader {
         return map;
     }
 
-    public TiledMap loadTileMap(JsonObject object) {
+    private TiledMap loadTileMap(JsonObject object) {
         TiledMap map = new TiledMap();
 
         String orientation = object.getString("orientation", null);
@@ -45,7 +46,10 @@ public class TiledMapLoader {
         mapProperties.put("tilewidth", tileWidth);
         mapProperties.put("tileheight", tileHeight);
 
-        // TODO: Load map properties object too
+        if(object.containsKey("properties")) {
+            loadProperties(mapProperties,
+                    object.getJsonObject("properties"), object.getJsonObject("propertytypes"));
+        }
 
         JsonArray tilesets = object.getJsonArray("tilesets");
         for(int t = 0; t < tilesets.size(); t++) {
@@ -63,11 +67,13 @@ public class TiledMapLoader {
 
     private void loadTileSet(TiledMap map, JsonObject object) {
         String name = object.getString("name");
-        int firstgid = object.getInt("firstgid", 1);
-        int tilewidth = object.getInt("tilewidth", 0);
-        int tileheight = object.getInt("tileheight", 0);
+        int firstGid = object.getInt("firstgid", 1);
+        int tileWidth = object.getInt("tilewidth", 0);
+        int tileHeight = object.getInt("tileheight", 0);
         int spacing = object.getInt("spacing", 0);
         int margin = object.getInt("margin", 0);
+
+        // TODO: Add support for non image tileSets
 
         BufferedImage image = null;
         String imageSource = null;
@@ -85,27 +91,27 @@ public class TiledMapLoader {
 
         TiledMapTileSet tileset = new TiledMapTileSet();
         tileset.setName(name);
-        tileset.getProperties().put("firstgid", firstgid);
+        tileset.getProperties().put("firstgid", firstGid);
 
         if(image != null) {
             MapProperties properties = tileset.getProperties();
             properties.put("imagesource", imageSource);
             properties.put("imagewidth", imageWidth);
             properties.put("imageheight", imageHeight);
-            properties.put("tilewidth", tilewidth);
-            properties.put("tileheight", tileheight);
+            properties.put("tilewidth", tileWidth);
+            properties.put("tileheight", tileHeight);
             properties.put("margin", margin);
             properties.put("spacing", spacing);
 
-            int stopWidth = image.getWidth() - tilewidth;
-            int stopHeight = image.getHeight() - tileheight;
-            int id = firstgid;
+            int stopWidth = image.getWidth() - tileWidth;
+            int stopHeight = image.getHeight() - tileHeight;
+            int id = firstGid;
 
-            for(int y = margin; y <= stopHeight; y += tileheight + spacing) {
-                for(int x = margin; x <= stopWidth; x += tilewidth + spacing) {
+            for(int y = margin; y <= stopHeight; y += tileHeight + spacing) {
+                for(int x = margin; x <= stopWidth; x += tileWidth + spacing) {
                     TiledMapTile tile = new TiledMapTile();
                     tile.setId(id);
-                    tile.setImage(image.getSubimage(x, y, tilewidth, tileheight));
+                    tile.setImage(image.getSubimage(x, y, tileWidth, tileHeight));
                     tileset.putTile(id++, tile);
                 }
             }
@@ -118,14 +124,35 @@ public class TiledMapLoader {
     }
 
     private void loadLayer(TiledMap map, JsonObject object) {
-        if(object.getString("type").equals("tilelayer")) {
-            int width = object.getInt("width");
-            int height = object.getInt("height");
-            int opacity = object.getInt("opacity");
-            boolean visible = object.getBoolean("visible");
+        switch (object.getString("type")) {
+            case "tilelayer":
+                loadTileLayer(map, object);
+                break;
+            case "objectgroup":
+                loadObjectGroup(map, object);
+                break;
+            default:
+                System.out.println(object);
+                throw new RuntimeException("Unsupported layer found!");
+        }
+    }
 
-            TiledMapTileLayer layer = new TiledMapTileLayer(width, height, map.getProperties().get("tilewidth", Integer.class), map.getProperties().get("tileheight", Integer.class));
-            map.getLayers().add(layer);
+    private void loadTileLayer(TiledMap map, JsonObject object) {
+        if(object.getString("type").equals("tilelayer")) {
+            int width = object.getInt("width", 0);
+            int height = object.getInt("height", 0);
+
+            int tileWidth = map.getProperties().get("tilewidth", Integer.class);
+            int tileHeight = map.getProperties().get("tileheight", Integer.class);
+
+            TiledMapTileLayer layer = new TiledMapTileLayer(width, height, tileWidth, tileHeight);
+
+            loadLayerInfo(layer, object);
+
+            if(object.containsKey("properties")) {
+                loadProperties(layer.getProperties(),
+                        object.getJsonObject("properties"), object.getJsonObject("propertytypes"));
+            }
 
             TiledMapTileSets tileSets = map.getTileSets();
             JsonArray tiles = object.getJsonArray("data");
@@ -134,14 +161,70 @@ public class TiledMapLoader {
                     int id = tiles.getInt(y * width + x);
                     TiledMapTile tile = tileSets.getTile(id);
                     if(tile != null) {
-                        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+                        Cell cell = new Cell();
                         cell.setTile(tile);
                         layer.setCell(x, y, cell);
                     }
                 }
             }
-        } else {
-            System.out.println(object);
+
+            map.getLayers().add(layer);
         }
+    }
+
+    private void loadObjectGroup(TiledMap map, JsonObject object) {
+        MapLayer layer = new MapLayer();
+
+        loadLayerInfo(layer, object);
+
+        if(object.containsKey("properties")) {
+            loadProperties(layer.getProperties(),
+                    object.getJsonObject("properties"), object.getJsonObject("propertytypes"));
+        }
+
+        System.err.println("[TiledMapLoader] ObjectGroups are not fully supported yet!");
+
+        map.getLayers().add(layer);
+    }
+
+    /**
+     * Load basic layer information
+     * @param layer The layer to set info to
+     * @param object THe object to read from
+     */
+    private void loadLayerInfo(MapLayer layer, JsonObject object) {
+        int opacity = object.getInt("opacity", 0);
+        boolean visible = object.getBoolean("visible", true);
+        String name = object.getString("name", null);
+
+        layer.setName(name);
+        layer.setOpacity(opacity);
+        layer.setVisible(visible);
+    }
+
+    private void loadProperties(MapProperties properties, JsonObject values, JsonObject types) {
+        for(String key : types.keySet()) {
+            String type = types.getString(key);
+
+            if(type.equals("int")) {
+                properties.put(key, values.getInt(key));
+            } else if(type.equals("float")) {
+                properties.put(key, Float.parseFloat(values.get(key).toString()));
+            } else if(type.equals("bool")) {
+                properties.put(key, values.getBoolean(key));
+            } else if(type.equals("color")) {
+                String value = values.getString(key);
+                String opaqueColor = value.substring(3);
+                String alpha = value.substring(1, 3);
+                properties.put(key, Color.valueOf(opaqueColor + alpha));
+            } else {
+                throw new RuntimeException("Wrong type given for property " + key + ", given : " + type
+                        + ", supported : string, bool, int, float, color");
+            }
+        }
+    }
+
+    private void loadTileSetProperties() {
+
     }
 }
