@@ -2,7 +2,7 @@ package me.paulhobbel.marioplatform.maps;
 
 import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.GameObject;
-import me.paulhobbel.engine.World;
+import me.paulhobbel.engine.GameWorld;
 import me.paulhobbel.engine.component.DebugComponent;
 import me.paulhobbel.engine.component.MapComponent;
 import me.paulhobbel.engine.map.MapLayer;
@@ -26,7 +26,7 @@ class Level extends GameObject {
     }
 
     private void loadObjects(MapComponent component) {
-        World world = Engine.getInstance().getWorld();
+        GameWorld world = Engine.getInstance().getWorld();
 
         for(MapLayer layer : component.getMap().getLayers()) {
             for(MapObject object : layer.getObjects()) {
@@ -34,9 +34,10 @@ class Level extends GameObject {
                 int x = object.getProperties().get("x", Integer.class);
                 int y = object.getProperties().get("y", Integer.class);
 
-                Point2D position = new Point2D.Double(x, y);
+                Point2D position = new Point2D.Double(x / 100, -y / 100);
 
                 if(type.equals("Ground")) {
+                    System.out.println(position);
                     world.addObject(new Ground(position, object.getShape()));
                 } else if(type.equals("Pipe")) {
                     world.addObject(new Pipe(position, object.getShape()));
