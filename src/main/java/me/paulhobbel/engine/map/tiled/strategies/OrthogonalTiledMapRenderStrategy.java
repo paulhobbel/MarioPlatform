@@ -1,20 +1,16 @@
 package me.paulhobbel.engine.map.tiled.strategies;
 
-import me.paulhobbel.engine.component.MapComponent;
 import me.paulhobbel.engine.map.MapLayer;
-import me.paulhobbel.engine.map.MapObject;
 import me.paulhobbel.engine.map.MapRenderStrategy;
-import me.paulhobbel.engine.map.objects.EllipseMapObject;
-import me.paulhobbel.engine.map.objects.PolygonMapObject;
-import me.paulhobbel.engine.map.objects.RectangleMapObject;
 import me.paulhobbel.engine.map.tiled.TiledMapTileLayer;
+import me.paulhobbel.engine.objects.Map;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class OrthogonalTiledMapRenderStrategy extends MapRenderStrategy {
 
-    private void renderTileLayer(Graphics2D g2d, MapComponent map, TiledMapTileLayer layer) {
+    private void renderTileLayer(Graphics2D g2d, Map map, TiledMapTileLayer layer) {
         int height = layer.getHeight();
         int width = layer.getWidth();
         int tileWidth = layer.getTileWidth();
@@ -24,7 +20,7 @@ public class OrthogonalTiledMapRenderStrategy extends MapRenderStrategy {
                 TiledMapTileLayer.Cell cell = layer.getCell(x, y);
 
                 if(cell != null) {
-                    AffineTransform tx = map.getParent().getTransform();
+                    AffineTransform tx = map.getTransform();
                     tx.translate(x * tileWidth, y * tileHeight);
 
                     g2d.drawImage(cell.getTile().getImage(), tx, null);
@@ -48,7 +44,7 @@ public class OrthogonalTiledMapRenderStrategy extends MapRenderStrategy {
 //    }
 
     @Override
-    public void render(Graphics2D g2d, MapComponent map) {
+    public void render(Graphics2D g2d, Map map) {
         for(MapLayer layer : map.getMap().getLayers()) {
             if(!layer.isVisible()) continue;
 

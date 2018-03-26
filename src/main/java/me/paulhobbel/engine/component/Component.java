@@ -25,6 +25,6 @@ public class Component {
     public void stop() {
     }
 
-    public void update() {
+    public void update(double elapsedTime) {
     }
 }

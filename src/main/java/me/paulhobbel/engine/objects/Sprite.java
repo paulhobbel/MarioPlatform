@@ -1,27 +1,27 @@
-package me.paulhobbel.engine.component;
+package me.paulhobbel.engine.objects;
 
 import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.graphics.renderer.SpriteRenderer;
 
 import javax.imageio.ImageIO;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class SpriteComponent extends Component {
-
+public class Sprite extends GameObject {
     private int layer;
     private int frame = 0;
-    private BufferedImage[] sprites;
+    protected BufferedImage[] sprites;
 
     private static HashMap<String, BufferedImage[]> imageCache = new HashMap<>();
 
-    public SpriteComponent(int layer, String spriteFile, GameObject parent) {
-        this(layer, spriteFile, 1, 1, parent);
+    public Sprite(Point2D position, int layer, String spriteFile) {
+        this(position, layer, spriteFile, 1, 1);
     }
 
-    public SpriteComponent(int layer, String spriteFile, int rows, int columns, GameObject parent) {
-        super(parent);
+    public Sprite(Point2D position, int layer, String spriteFile, int rows, int columns) {
+        super(position);
 
         this.layer = layer;
 
@@ -61,10 +61,10 @@ public class SpriteComponent extends Component {
         SpriteRenderer.getInstance().addSprite(this);
     }
 
-    @Override
-    public void pause() {
-        SpriteRenderer.getInstance().removeSprite(this);
-    }
+//    @Override
+//    public void pause() {
+//        SpriteRenderer.getInstance().removeSprite(this);
+//    }
 
     public void setFrame(int frame) {
         this.frame = frame;

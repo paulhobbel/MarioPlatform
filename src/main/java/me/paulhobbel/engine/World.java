@@ -2,21 +2,23 @@ package me.paulhobbel.engine;
 
 import me.paulhobbel.engine.graphics.Camera;
 import me.paulhobbel.engine.map.tiled.TiledMap;
+import me.paulhobbel.engine.physics.Collidable;
 
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class World {
-    private TiledMap map;
     private Camera camera;
 
-    private ArrayList<GameObject> objects = new ArrayList<>();
+    private GameObjects objects = new GameObjects();
 
     World() {
         camera = new Camera();
-    }
-
-    public void setMap(TiledMap map) {
-        this.map = map;
     }
 
     public void addObject(GameObject object) {
@@ -39,7 +41,36 @@ public class World {
         }
     }
 
-    public TiledMap getMap() {
-        return map;
+    public boolean hasCollision(double x, double y) {
+        ArrayList<Collidable> collidables = objects.getByType(Collidable.class);
+
+        for(Collidable collidable1: collidables) {
+            if(collidable1.getShape().contains(x, y)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasCollision(double x, double y, double width, double height) {
+        ArrayList<Collidable> collidables = objects.getByType(Collidable.class);
+
+        for(Collidable collidable1: collidables) {
+            if(collidable1.getShape().intersects(x, y, width, height)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasCollision(Collidable collidable) {
+        ArrayList<Collidable> collidables = objects.getByType(Collidable.class);
+
+        for(Collidable collidable1: collidables) {
+            if(collidable1.getShape().contains(collidable.getPosition())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

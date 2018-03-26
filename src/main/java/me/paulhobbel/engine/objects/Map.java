@@ -1,16 +1,21 @@
-package me.paulhobbel.engine.component;
+package me.paulhobbel.engine.objects;
 
 import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.graphics.renderer.MapRenderer;
 import me.paulhobbel.engine.map.tiled.TiledMap;
 import me.paulhobbel.engine.map.tiled.TiledMapLoader;
 
-public class MapComponent extends Component {
+import java.awt.geom.Point2D;
 
+public class Map extends GameObject {
     TiledMap map;
 
-    public MapComponent(String mapFile, GameObject parent) {
-        super(parent);
+    public Map(String mapFile) {
+        this(new Point2D.Double(0, 0), mapFile);
+    }
+
+    public Map(Point2D position, String mapFile) {
+        super(position);
         TiledMapLoader loader = new TiledMapLoader();
         map = loader.load(mapFile);
     }
@@ -20,10 +25,10 @@ public class MapComponent extends Component {
         MapRenderer.getInstance().setMap(this);
     }
 
-    @Override
-    public void pause() {
-        MapRenderer.getInstance().setMap(null);
-    }
+//    @Override
+//    public void pause() {
+//        MapRenderer.getInstance().setMap(null);
+//    }
 
     public TiledMap getMap() {
         return map;

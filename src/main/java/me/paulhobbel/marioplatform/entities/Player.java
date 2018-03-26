@@ -1,52 +1,95 @@
 package me.paulhobbel.marioplatform.entities;
 
 import me.paulhobbel.engine.Engine;
-import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.World;
-import me.paulhobbel.engine.component.SpriteComponent;
+import me.paulhobbel.engine.component.DebugComponent;
+import me.paulhobbel.engine.graphics.Animation.PlayMode;
+import me.paulhobbel.engine.objects.AnimatedSprite;
 import me.paulhobbel.engine.window.input.InputManager;
+import me.paulhobbel.marioplatform.entities.Player.AnimationTypes;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
+import java.awt.geom.Rectangle2D;
 
-public class Player extends GameObject {
+public class Player extends AnimatedSprite<AnimationTypes> {
+
+    public enum AnimationTypes {
+        IDLE,
+        WALKING,
+        JUMPING
+    }
 
     private Point2D speed = new Point2D.Double(0, 0);
-    private SpriteComponent sprite;
 
     public Player(Point2D position) {
-        super(position);
-        sprite = new SpriteComponent(0, "/sprites/mario.png", 12, 1, this);
+        super(position, 0, "/sprites/mario.png", 12, 1);
 
-        addComponent(sprite);
+        addAnimation(AnimationTypes.IDLE, 0, new int[] { 0 }, PlayMode.NORMAL);
+        addAnimation(AnimationTypes.WALKING, 0.2f, new int[] { 1, 2, 3 }, PlayMode.LOOP);
+        addAnimation(AnimationTypes.JUMPING, 0, new int[] { 5 }, PlayMode.NORMAL);
+
+        setAnimation(AnimationTypes.IDLE);
         setScale(3);
     }
 
     @Override
     public void update(double elapsedTime) {
+        super.update(elapsedTime);
         InputManager inputManager = InputManager.getInstance();
         if (inputManager.isKeyPressed(KeyEvent.VK_D)) {
             double newX = Math.min(150, speed.getX() + 5000 * elapsedTime);
             speed = new Point2D.Double(newX, speed.getY());
+            setAnimation(AnimationTypes.WALKING);
         } else if (inputManager.isKeyPressed(KeyEvent.VK_A)) {
             double newX = Math.max(-150, speed.getX() - 5000 * elapsedTime);
             speed = new Point2D.Double(newX, speed.getY());
-        } else {
+        } else if(Math.abs(speed.getX()) >= 0) {
             double newX = speed.getX() * 0.9;
             speed = new Point2D.Double(newX, speed.getY());
         }
 
-        double newX = speed.getX() * elapsedTime;
-        translate(newX, 0);
-
-        if(Math.abs(Math.round(newX)) > 0) {
-            sprite.setFrame((int) ((System.currentTimeMillis() / 100) % 4));
-        } else {
-            sprite.setFrame(0);
+        if(inputManager.isKeyPressed(KeyEvent.VK_SPACE)) {
+            setAnimation(AnimationTypes.JUMPING);
+            speed = new Point2D.Double(speed.getX(), -150);
         }
 
+
         World world = Engine.getInstance().getWorld();
+        double newX = speed.getX() * elapsedTime;
+        double newY = speed.getY() * elapsedTime;
+        boolean collision = false;
+
+        if(speed.getX() > 0) {
+            //System.out.println(position);
+            if (world.hasCollision(position.getX() + newX - 1, position.getY() + newY - 15, 15, 15))
+                collision = true;
+        }
+//        else if(speed.getX() < 0) {
+//            if (world.hasCollision(position.getX() + newX + 1, position.getY()+1))
+//                collision = true;
+//        }
+
+
+
+        if(!collision) {
+            speed = new Point2D.Double(speed.getX(), speed.getY() + 300 * elapsedTime);
+            translate(newX, newY);
+        } else {
+            speed = new Double(speed.getX(), 0);
+        }
+
+
+
+        if(Math.abs(Math.round(newX)) > 0) {
+            //sprite.setFrame((int) ((System.currentTimeMillis() / 100) % 4));
+
+        }
+
+
 
         if(getPosition().getX()*3 - world.getCamera().getPosition().getX() > 240) {
             world.getCamera().getPosition().setLocation(getPosition().getX()*3 - 240, 0);
@@ -57,7 +100,7 @@ public class Player extends GameObject {
     public AffineTransform getTransform() {
         AffineTransform tx = super.getTransform();
         if(speed.getX() < 0) {
-            tx.translate(sprite.getImage().getWidth(), 0);
+            tx.translate(getImage().getWidth(), 0);
             tx.scale(-1, 1);
         }
 

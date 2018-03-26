@@ -4,31 +4,28 @@ import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.World;
 import me.paulhobbel.engine.component.DebugComponent;
-import me.paulhobbel.engine.component.MapComponent;
 import me.paulhobbel.engine.map.MapLayer;
 import me.paulhobbel.engine.map.MapObject;
+import me.paulhobbel.engine.objects.Map;
 import me.paulhobbel.marioplatform.objects.Ground;
 import me.paulhobbel.marioplatform.objects.Pipe;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 
-class Level extends GameObject {
+class Level extends Map {
     Level(String mapFile) {
-        super();
-        MapComponent component = new MapComponent(mapFile, this);
-        addComponent(component);
+        super(mapFile);
 
-        loadObjects(component);
+        loadObjects();
 
         setScale(3);
     }
 
-    private void loadObjects(MapComponent component) {
+    private void loadObjects() {
         World world = Engine.getInstance().getWorld();
 
-        for(MapLayer layer : component.getMap().getLayers()) {
+        for(MapLayer layer : getMap().getLayers()) {
             for(MapObject object : layer.getObjects()) {
                 String type = object.getProperties().get("type", String.class);
                 int x = object.getProperties().get("x", Integer.class);

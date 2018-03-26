@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class GameObject {
 
-    private Point2D position;
+    protected Point2D position;
     private double scale;
     private double rotation;
 
@@ -27,6 +27,15 @@ public class GameObject {
     public void addComponent(Component component) {
         components.add(component);
         component.start();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getComponent(Class<T> component){
+        for(Component c : components){
+            if(component.isInstance(c))
+                return (T) c;
+        }
+        return null;
     }
 
     public void removeComponent(Component component) {
@@ -57,9 +66,13 @@ public class GameObject {
             component.resume();
     }
 
-    protected void update(){
+    /**
+     * Update the game object
+     * @param elapsedTime Elapsed time since last update
+     */
+    public void update(double elapsedTime){
         for(Component component : components){
-            component.update();
+            component.update(elapsedTime);
         }
     }
 
@@ -79,13 +92,5 @@ public class GameObject {
         tx.translate(position.getX(), position.getY());
 
         return tx;
-    }
-
-    /**
-     * Update the game object
-     * @param elapsedTime Elapsed time since last update
-     */
-    public void update(double elapsedTime) {
-        //frame = new Random().nextInt(sprites.length);
     }
 }

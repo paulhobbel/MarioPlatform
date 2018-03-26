@@ -1,6 +1,6 @@
 package me.paulhobbel.engine.map;
 
-import me.paulhobbel.engine.component.MapComponent;
+import me.paulhobbel.engine.objects.Map;
 
 import java.awt.*;
 
@@ -15,12 +15,12 @@ public abstract class MapRenderStrategy {
      * @param g2d Graphics2D canvas
      * @param map MapComponent to draw
      */
-    public abstract void render(Graphics2D g2d, MapComponent map);
+    public abstract void render(Graphics2D g2d, Map map);
 
     private static class NullMapRenderStrategy extends MapRenderStrategy {
 
         @Override
-        public void render(Graphics2D g2d, MapComponent map) {
+        public void render(Graphics2D g2d, Map map) {
 
         }
     }

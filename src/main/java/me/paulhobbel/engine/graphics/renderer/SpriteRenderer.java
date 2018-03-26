@@ -1,7 +1,7 @@
 package me.paulhobbel.engine.graphics.renderer;
 
-import me.paulhobbel.engine.component.SpriteComponent;
 import me.paulhobbel.engine.graphics.Renderer;
+import me.paulhobbel.engine.objects.Sprite;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class SpriteRenderer implements Renderer {
-    private Map<Integer, ArrayList<SpriteComponent>> layers = new TreeMap<>();
+    private Map<Integer, ArrayList<Sprite>> layers = new TreeMap<>();
 
     private static SpriteRenderer instance;
 
@@ -22,14 +22,14 @@ public class SpriteRenderer implements Renderer {
 
     public SpriteRenderer() { }
 
-    public void addSprite(SpriteComponent sprite) {
+    public void addSprite(Sprite sprite) {
         if(!layers.containsKey(sprite.getLayer())) {
             layers.put(sprite.getLayer(), new ArrayList<>());
         }
         layers.get(sprite.getLayer()).add(sprite);
     }
 
-    public void removeSprite(SpriteComponent sprite) {
+    public void removeSprite(Sprite sprite) {
         if(layers.containsKey(sprite.getLayer())) {
             layers.get(sprite.getLayer()).remove(sprite);
         }
@@ -37,9 +37,9 @@ public class SpriteRenderer implements Renderer {
 
     @Override
     public void render(Graphics2D g2d) {
-        for(ArrayList<SpriteComponent> layer : layers.values()) {
-            for(SpriteComponent sprite : layer) {
-                AffineTransform tx = sprite.getParent().getTransform();
+        for(ArrayList<Sprite> layer : layers.values()) {
+            for(Sprite sprite : layer) {
+                AffineTransform tx = sprite.getTransform();
                 tx.translate(0, -sprite.getImage().getHeight());
 
                 g2d.drawImage(sprite.getImage(), tx, null);

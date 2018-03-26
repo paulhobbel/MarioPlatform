@@ -24,7 +24,7 @@ public class WindowPanel extends JPanel {
 
         g2d.setTransform(Engine.getInstance().getWorld().getCamera().getTransform());
 
-        //MapRenderer.getInstance().render(g2d);
+        MapRenderer.getInstance().render(g2d);
         SpriteRenderer.getInstance().render(g2d);
 
         DebugRenderer.getInstance().render(g2d);
