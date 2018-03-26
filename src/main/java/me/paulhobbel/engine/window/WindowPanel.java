@@ -1,6 +1,7 @@
 package me.paulhobbel.engine.window;
 
 import me.paulhobbel.engine.Engine;
+import me.paulhobbel.engine.graphics.renderer.CollisionRenderer;
 import me.paulhobbel.engine.graphics.renderer.DebugRenderer;
 import me.paulhobbel.engine.graphics.renderer.MapRenderer;
 import me.paulhobbel.engine.graphics.renderer.SpriteRenderer;
@@ -27,6 +28,7 @@ public class WindowPanel extends JPanel {
         MapRenderer.getInstance().render(g2d);
         SpriteRenderer.getInstance().render(g2d);
 
+        CollisionRenderer.getInstance().render(g2d);
         DebugRenderer.getInstance().render(g2d);
     }
 }

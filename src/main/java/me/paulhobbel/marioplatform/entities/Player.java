@@ -5,6 +5,7 @@ import me.paulhobbel.engine.World;
 import me.paulhobbel.engine.component.DebugComponent;
 import me.paulhobbel.engine.graphics.Animation.PlayMode;
 import me.paulhobbel.engine.objects.AnimatedSprite;
+import me.paulhobbel.engine.physics.Collidable;
 import me.paulhobbel.engine.window.input.InputManager;
 import me.paulhobbel.marioplatform.entities.Player.AnimationTypes;
 
@@ -15,7 +16,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
 
-public class Player extends AnimatedSprite<AnimationTypes> {
+public class Player extends AnimatedSprite<AnimationTypes> implements Collidable {
 
     public enum AnimationTypes {
         IDLE,
@@ -63,37 +64,37 @@ public class Player extends AnimatedSprite<AnimationTypes> {
         double newY = speed.getY() * elapsedTime;
         boolean collision = false;
 
-        if(speed.getX() > 0) {
+        //if(speed.getX() > 0) {
             //System.out.println(position);
-            if (world.hasCollision(position.getX() + newX - 1, position.getY() + newY - 15, 15, 15))
+            if (world.hasCollision(this)) {
                 collision = true;
-        }
+                System.out.println("We have collision!");
+            }
+        //}
 //        else if(speed.getX() < 0) {
 //            if (world.hasCollision(position.getX() + newX + 1, position.getY()+1))
 //                collision = true;
-//        }
+//        }d
 
 
+        Point2D oldPosition = new Point2D.Double(position.getX(), position.getY() - 1);
+        translate(newX, newY - 1);
 
         if(!collision) {
             speed = new Point2D.Double(speed.getX(), speed.getY() + 300 * elapsedTime);
-            translate(newX, newY);
         } else {
             speed = new Double(speed.getX(), 0);
+            position.setLocation(oldPosition);
         }
-
-
-
-        if(Math.abs(Math.round(newX)) > 0) {
-            //sprite.setFrame((int) ((System.currentTimeMillis() / 100) % 4));
-
-        }
-
-
 
         if(getPosition().getX()*3 - world.getCamera().getPosition().getX() > 240) {
             world.getCamera().getPosition().setLocation(getPosition().getX()*3 - 240, 0);
         }
+    }
+
+    @Override
+    public Rectangle2D getBounds() {
+        return new Rectangle2D.Double(position.getX(), position.getY()+16, 16, 16);
     }
 
     @Override

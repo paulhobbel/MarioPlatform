@@ -11,6 +11,7 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class World {
     private Camera camera;
@@ -45,7 +46,7 @@ public class World {
         ArrayList<Collidable> collidables = objects.getByType(Collidable.class);
 
         for(Collidable collidable1: collidables) {
-            if(collidable1.getShape().contains(x, y)) {
+            if(collidable1.getBounds().contains(x, y)) {
                 return true;
             }
         }
@@ -56,7 +57,7 @@ public class World {
         ArrayList<Collidable> collidables = objects.getByType(Collidable.class);
 
         for(Collidable collidable1: collidables) {
-            if(collidable1.getShape().intersects(x, y, width, height)) {
+            if(collidable1.getBounds().intersects(x, y, width, height)) {
                 return true;
             }
         }
@@ -65,9 +66,11 @@ public class World {
 
     public boolean hasCollision(Collidable collidable) {
         ArrayList<Collidable> collidables = objects.getByType(Collidable.class);
+        collidables.sort(Collidable.compareDistance(collidable.getPosition()));
 
         for(Collidable collidable1: collidables) {
-            if(collidable1.getShape().contains(collidable.getPosition())) {
+            if(collidable1.getBounds().intersects(collidable.getBounds().getBounds2D()) && !collidable1.equals(collidable)) {
+                System.out.println(collidable1);
                 return true;
             }
         }

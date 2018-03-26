@@ -40,7 +40,7 @@ public class SpriteRenderer implements Renderer {
         for(ArrayList<Sprite> layer : layers.values()) {
             for(Sprite sprite : layer) {
                 AffineTransform tx = sprite.getTransform();
-                tx.translate(0, -sprite.getImage().getHeight());
+                //tx.translate(0, -sprite.getImage().getHeight());
 
                 g2d.drawImage(sprite.getImage(), tx, null);
             }
