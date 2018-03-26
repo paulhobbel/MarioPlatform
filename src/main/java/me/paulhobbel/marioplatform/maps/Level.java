@@ -7,6 +7,7 @@ import me.paulhobbel.engine.component.DebugComponent;
 import me.paulhobbel.engine.map.MapLayer;
 import me.paulhobbel.engine.map.MapObject;
 import me.paulhobbel.engine.objects.Map;
+import me.paulhobbel.marioplatform.entities.Goomba;
 import me.paulhobbel.marioplatform.objects.Ground;
 import me.paulhobbel.marioplatform.objects.Pipe;
 
@@ -37,6 +38,8 @@ class Level extends Map {
                     world.addObject(new Ground(position, object.getShape()));
                 } else if(type.equals("Pipe")) {
                     world.addObject(new Pipe(position, object.getShape()));
+                } else if(type.equals("Goomba")) {
+                    world.addObject(new Goomba(position));
                 } else {
                     GameObject gameObject = new GameObject(position);
                     gameObject.addComponent(new DebugComponent(object.getShape(), Color.RED, gameObject));

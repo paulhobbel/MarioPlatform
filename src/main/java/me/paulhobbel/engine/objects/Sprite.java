@@ -2,9 +2,8 @@ package me.paulhobbel.engine.objects;
 
 import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.graphics.renderer.CollisionRenderer;
-import me.paulhobbel.engine.graphics.renderer.DebugRenderer;
 import me.paulhobbel.engine.graphics.renderer.SpriteRenderer;
-import me.paulhobbel.engine.physics.Collidable;
+import me.paulhobbel.engine.physics.collision.Collidable;
 
 import javax.imageio.ImageIO;
 import java.awt.geom.Point2D;
@@ -62,7 +61,8 @@ public class Sprite extends GameObject {
     @Override
     public void resume() {
         SpriteRenderer.getInstance().addSprite(this);
-        if(Collidable.class.isAssignableFrom(getClass())) {
+        if(Collidable.class.isInstance(this)) {
+            System.out.println(this);
             CollisionRenderer.getInstance().addCollidable((Collidable) this);
         }
     }

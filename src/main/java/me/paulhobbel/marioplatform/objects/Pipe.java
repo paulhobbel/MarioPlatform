@@ -2,12 +2,11 @@ package me.paulhobbel.marioplatform.objects;
 
 import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.component.DebugComponent;
-import me.paulhobbel.engine.physics.Collidable;
+import me.paulhobbel.engine.physics.collision.Collidable;
 
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 public class Pipe extends GameObject implements Collidable {
 

@@ -1,11 +1,6 @@
 package me.paulhobbel.engine;
 
-import me.paulhobbel.engine.map.MapObject;
-import me.paulhobbel.engine.physics.Collidable;
-
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class GameObjects extends ArrayList<GameObject> {
     /**

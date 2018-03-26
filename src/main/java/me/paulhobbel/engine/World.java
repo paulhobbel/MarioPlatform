@@ -1,17 +1,12 @@
 package me.paulhobbel.engine;
 
 import me.paulhobbel.engine.graphics.Camera;
-import me.paulhobbel.engine.map.tiled.TiledMap;
-import me.paulhobbel.engine.physics.Collidable;
+import me.paulhobbel.engine.physics.collision.Collidable;
+import me.paulhobbel.engine.physics.collision.Contact;
+import me.paulhobbel.engine.physics.collision.Contact.ContactType;
+import me.paulhobbel.engine.physics.collision.ContactListener;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class World {
     private Camera camera;
@@ -37,6 +32,7 @@ public class World {
      * @param elapsedTime Elapsed time since last update
      */
     public void update(double elapsedTime) {
+        tick();
         for(GameObject object : objects) {
             object.update(elapsedTime);
         }
@@ -70,10 +66,27 @@ public class World {
 
         for(Collidable collidable1: collidables) {
             if(collidable1.getBounds().intersects(collidable.getBounds().getBounds2D()) && !collidable1.equals(collidable)) {
-                System.out.println(collidable1);
+//                if(ContactListener.class.isInstance(collidable)) {
+//                    ((ContactListener) collidable).onCollision(new Contact(collidable1, ContactType.BOTTOM));
+//                }
                 return true;
             }
         }
         return false;
+    }
+
+    private void tick() {
+        ArrayList<ContactListener> contactListeners = objects.getByType(ContactListener.class);
+        ArrayList<Collidable> collidables = objects.getByType(Collidable.class);
+
+        for(ContactListener contactListener : contactListeners) {
+            for(Collidable collidable : collidables) {
+                if(collidable.equals(contactListener)) continue;
+
+                if(collidable.getBounds().intersects(contactListener.getBounds().getBounds2D())) {
+                    contactListener.onCollision(new Contact(collidable, ContactType.BOTTOM));
+                }
+            }
+        }
     }
 }

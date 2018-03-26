@@ -2,21 +2,22 @@ package me.paulhobbel.marioplatform.entities;
 
 import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.World;
-import me.paulhobbel.engine.component.DebugComponent;
 import me.paulhobbel.engine.graphics.Animation.PlayMode;
 import me.paulhobbel.engine.objects.AnimatedSprite;
-import me.paulhobbel.engine.physics.Collidable;
+import me.paulhobbel.engine.physics.collision.Collidable;
+import me.paulhobbel.engine.physics.collision.Contact;
+import me.paulhobbel.engine.physics.collision.ContactListener;
 import me.paulhobbel.engine.window.input.InputManager;
 import me.paulhobbel.marioplatform.entities.Player.AnimationTypes;
 
-import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
 
-public class Player extends AnimatedSprite<AnimationTypes> implements Collidable {
+public class Player extends Entity<AnimationTypes> {
 
     public enum AnimationTypes {
         IDLE,
@@ -42,11 +43,11 @@ public class Player extends AnimatedSprite<AnimationTypes> implements Collidable
         super.update(elapsedTime);
         InputManager inputManager = InputManager.getInstance();
         if (inputManager.isKeyPressed(KeyEvent.VK_D)) {
-            double newX = Math.min(150, speed.getX() + 5000 * elapsedTime);
+            double newX = Math.min(120, speed.getX() + 5000 * elapsedTime);
             speed = new Point2D.Double(newX, speed.getY());
             setAnimation(AnimationTypes.WALKING);
         } else if (inputManager.isKeyPressed(KeyEvent.VK_A)) {
-            double newX = Math.max(-150, speed.getX() - 5000 * elapsedTime);
+            double newX = Math.max(-120, speed.getX() - 5000 * elapsedTime);
             speed = new Point2D.Double(newX, speed.getY());
         } else if(Math.abs(speed.getX()) >= 0) {
             double newX = speed.getX() * 0.9;
@@ -94,7 +95,7 @@ public class Player extends AnimatedSprite<AnimationTypes> implements Collidable
 
     @Override
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(position.getX(), position.getY()+16, 16, 16);
+        return new Rectangle2D.Double(position.getX()+2, position.getY()+16, 13, 16);
     }
 
     @Override
