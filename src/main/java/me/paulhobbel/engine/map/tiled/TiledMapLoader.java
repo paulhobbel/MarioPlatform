@@ -1,6 +1,7 @@
 package me.paulhobbel.engine.map.tiled;
 
 import javafx.scene.paint.Color;
+import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.map.MapLayer;
 import me.paulhobbel.engine.map.MapObject;
 import me.paulhobbel.engine.map.MapObjects;
@@ -11,6 +12,12 @@ import me.paulhobbel.engine.map.objects.PolygonMapObject;
 import me.paulhobbel.engine.map.objects.RectangleMapObject;
 import me.paulhobbel.engine.map.tiled.TiledMapTileLayer.Cell;
 import me.paulhobbel.engine.map.tiled.strategies.OrthogonalTiledMapRenderStrategy;
+import me.paulhobbel.engine.physics.box2d.Body;
+import me.paulhobbel.engine.physics.box2d.BodyDef;
+import me.paulhobbel.engine.physics.box2d.FixtureDef;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.BodyType;
 
 import javax.imageio.ImageIO;
 import javax.json.*;

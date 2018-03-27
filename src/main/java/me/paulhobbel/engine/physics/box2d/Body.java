@@ -235,8 +235,8 @@ public class Body {
         body.applyTorque(torque);
     }
 
-    public void applyLinearImpulse(Vec2 impulse, Vec2 point) {
-        body.applyLinearImpulse(impulse, point);
+    public void applyLinearImpulse(Vec2 impulse, Vec2 point, boolean wake) {
+        body.applyLinearImpulse(impulse, point, wake);
     }
 
     public void applyAngularImpulse(float impulse) {

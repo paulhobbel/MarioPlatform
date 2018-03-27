@@ -10,6 +10,7 @@ import me.paulhobbel.marioplatform.entities.Player;
 import me.paulhobbel.marioplatform.maps.Level1;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Settings;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
@@ -58,6 +59,8 @@ public class Main {
 
         floorFixtureDef.shape = shape1;
         floorBody.createFixture(floorFixtureDef);
+
+        Settings.maxPolygonVertices = 50;
 
         engine.start();
     }
