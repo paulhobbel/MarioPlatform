@@ -1,6 +1,6 @@
-package me.paulhobbel.engine.physics.collision;
+package me.paulhobbel.engine.physics.collisionOld;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class Collision {

@@ -1,4 +1,4 @@
-package me.paulhobbel.engine.physics.collision;
+package me.paulhobbel.engine.physics.collisionOld;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;

@@ -27,10 +27,11 @@
             <artifactId>javax.json</artifactId>
             <version>1.1.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jbox2d/jbox2d-library -->
         <dependency>
-            <groupId>org.dyn4j</groupId>
-            <artifactId>dyn4j</artifactId>
-            <version>3.2.4</version>
+            <groupId>org.jbox2d</groupId>
+            <artifactId>jbox2d-library</artifactId>
+            <version>2.2.1.1</version>
         </dependency>
     </dependencies>
 </project>

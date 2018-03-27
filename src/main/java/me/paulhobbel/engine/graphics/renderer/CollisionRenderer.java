@@ -1,10 +1,9 @@
 package me.paulhobbel.engine.graphics.renderer;
 
 import me.paulhobbel.engine.graphics.Renderer;
-import me.paulhobbel.engine.physics.collision.Collidable;
+import me.paulhobbel.engine.physics.collisionOld.Collidable;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
@@ -17,12 +16,17 @@ public class CollisionRenderer implements Renderer {
     }
 
     private ArrayList<Collidable> collidables = new ArrayList<>();
+    private ArrayList<Shape> shapes = new ArrayList<>();
 
     private CollisionRenderer() {
     }
 
     public void addCollidable(Collidable collidable) {
         collidables.add(collidable);
+    }
+
+    public void addShape(Shape shape) {
+        shapes.add(shape);
     }
 
     @Override
@@ -32,6 +36,13 @@ public class CollisionRenderer implements Renderer {
             tx.scale(3, 3);
             g2d.setColor(Color.BLUE);
             g2d.draw(tx.createTransformedShape(collidable.getBounds()));
+        }
+
+        for(Shape shape : shapes) {
+            AffineTransform tx = new AffineTransform();
+            tx.scale(3, 3);
+            g2d.setColor(Color.BLUE);
+            g2d.draw(tx.createTransformedShape(shape));
         }
     }
 }

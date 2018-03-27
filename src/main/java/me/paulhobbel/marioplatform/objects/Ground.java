@@ -2,7 +2,7 @@ package me.paulhobbel.marioplatform.objects;
 
 import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.component.DebugComponent;
-import me.paulhobbel.engine.physics.collision.Collidable;
+import me.paulhobbel.engine.physics.collisionOld.Collidable;
 
 import java.awt.Color;
 import java.awt.Shape;

@@ -10,13 +10,13 @@ public class Engine implements ActionListener {
     private static Engine instance;
 
     private Timer gameLoop;
-    private World world;
+    private GameWorld world;
 
     private long lastTime;
 
     Engine() {
         gameLoop = new Timer(1, this);
-        world = new World();
+        world = new GameWorld();
     }
 
     public static Engine getInstance() {
@@ -24,7 +24,7 @@ public class Engine implements ActionListener {
         return instance;
     }
 
-    public World getWorld() {
+    public GameWorld getWorld() {
         return world;
     }
 

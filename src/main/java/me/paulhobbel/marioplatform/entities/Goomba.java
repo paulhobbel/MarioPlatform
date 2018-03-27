@@ -7,7 +7,6 @@ import java.awt.geom.Rectangle2D;
 
 public class Goomba extends Entity<Goomba.State> {
     public enum State {
-        IDLE,
         WALKING
     }
 

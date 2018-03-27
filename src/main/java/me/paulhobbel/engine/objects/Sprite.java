@@ -3,7 +3,7 @@ package me.paulhobbel.engine.objects;
 import me.paulhobbel.engine.GameObject;
 import me.paulhobbel.engine.graphics.renderer.CollisionRenderer;
 import me.paulhobbel.engine.graphics.renderer.SpriteRenderer;
-import me.paulhobbel.engine.physics.collision.Collidable;
+import me.paulhobbel.engine.physics.collisionOld.Collidable;
 
 import javax.imageio.ImageIO;
 import java.awt.geom.Point2D;
