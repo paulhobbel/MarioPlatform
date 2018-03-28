@@ -13,12 +13,13 @@ public class Body {
     public final org.jbox2d.dynamics.Body body;
     final ArrayList<Fixture> fixtures = new ArrayList<>();
 
-    private Transform transform = new Transform();
+    private Transform transform;
     private MassData massData = new MassData();
 
     protected Body(World world, org.jbox2d.dynamics.Body body) {
         this.world = world;
         this.body = body;
+        this.transform = new Transform(body);
     }
 
     public void setType(BodyType type) {
@@ -128,13 +129,6 @@ public class Body {
     }
 
     public Transform getTransform() {
-        org.jbox2d.common.Transform trans = body.getTransform();
-        System.out.println(trans.q);
-        transform.vals[Transform.POS_X] = trans.p.x;
-        transform.vals[Transform.POS_Y] = trans.p.y;
-        transform.vals[Transform.COS] = trans.q.c;
-        transform.vals[Transform.SIN] = trans.q.s;
-
         return transform;
     }
 
@@ -254,14 +248,19 @@ public class Body {
         return fixture;
     }
 
+    public Fixture createFixture(Shape shape) {
+        FixtureDef def = new FixtureDef();
+        def.shape = shape;
+
+        return createFixture(def);
+    }
+
     public Fixture createFixture(Shape shape, float density) {
-        org.jbox2d.dynamics.Fixture f = body.createFixture(shape, density);
+        FixtureDef def = new FixtureDef();
+        def.shape = shape;
+        def.density = density;
 
-        Fixture fixture = new Fixture(this, f);
-        fixtures.add(fixture);
-        world.fixtures.put(f, fixture);
-
-        return fixture;
+        return createFixture(def);
     }
 
     public void destroyFixture(Fixture fixture) {

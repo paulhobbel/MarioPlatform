@@ -67,6 +67,10 @@ public class World {
         }
     }
 
+    public Body createBody() {
+        return createBody(new BodyDef());
+    }
+
     public Body createBody(BodyDef def) {
         org.jbox2d.dynamics.Body b = world.createBody(def);
         Body body = new Body(this, b);

@@ -8,7 +8,6 @@ public class Fixture {
     org.jbox2d.dynamics.Fixture fixture;
     private Body body;
     protected Shape shape;
-    protected Object userData;
 
     protected Fixture(Body body, org.jbox2d.dynamics.Fixture fixture) {
         this.body = body;
@@ -19,7 +18,6 @@ public class Fixture {
         this.body = body;
         this.fixture = fixture;
         this.shape = null;
-        this.userData = null;
     }
 
     public ShapeType getType() {
@@ -44,6 +42,31 @@ public class Fixture {
 
     public Filter getFilterData() {
         return fixture.getFilterData();
+    }
+
+    public void setDensity(float density) {
+        fixture.setDensity(density);
+        fixture.m_body.resetMassData();
+    }
+
+    public float getDensity() {
+        return fixture.getDensity();
+    }
+
+    public void setRestitution(float restitution) {
+        fixture.setRestitution(restitution);
+    }
+
+    public float getRestitution() {
+        return fixture.getRestitution();
+    }
+
+    public void setFriction(float friction) {
+        fixture.setFriction(friction);
+    }
+
+    public float getFriction() {
+        return fixture.getFriction();
     }
 
     public void refilter() {

@@ -1,69 +1,68 @@
 package me.paulhobbel.engine.physics.box2d;
 
+import org.jbox2d.collision.broadphase.BroadPhase;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 import java.util.Arrays;
 
 public class Transform {
-    public static final int POS_X = 0;
-    public static final int POS_Y = 1;
-    public static final int COS = 2;
-    public static final int SIN = 3;
-
-    public float[] vals = new float[4];
-
-    private Vec2 position = new Vec2();
+    private Body body;
     private Vec2 orientation = new Vec2();
 
-    public Transform() {}
-
-    public Transform(Vec2 position, float angle) {
-        setPosition(position);
-        setRotation(angle);
+    public Transform(Body body) {
+        this.body = body;
     }
 
-    public Transform(Vec2 position, Vec2 orientation) {
-        setPosition(position);
-        setOrientation(orientation);
+    public void setTranslation(Vec2 position) {
+        setTranslation(position.x, position.y);
     }
 
-    public Vec2 mul(Vec2 v) {
-        //System.out.println(Arrays.toString(vals));
-        float x = vals[POS_X] + vals[COS] * v.x + -vals[SIN] * v.y;
-        float y = vals[POS_Y] + vals[SIN] * v.x + vals[COS] * v.y;
+    public void setTranslation(float x, float y) {
+        assert (!body.m_world.isLocked());
+        if (body.m_world.isLocked()) {
+            return;
+        }
 
-        v.x = x;
-        v.y = y;
-        return v;
+        body.m_xf.p.set(x, y);
+        org.jbox2d.common.Transform.mulToOutUnsafe(body.m_xf, body.m_sweep.localCenter, body.m_sweep.c);
+        body.m_sweep.c0.set(body.m_sweep.c);
+        body.m_sweep.a0 = body.m_sweep.a;
     }
 
-    public void setPosition(Vec2 position) {
-        vals[POS_X] = position.x;
-        vals[POS_Y] = position.y;
+    public Vec2 getTranslation() {
+        return body.m_xf.p;
     }
 
-    public Vec2 getPosition() {
-        return position.set(vals[0], vals[1]);
+    public float getTranslationX() {
+        return body.m_xf.p.x;
+    }
+
+    public float getTranslationY() {
+        return body.m_xf.p.y;
     }
 
     public void setRotation(float angle) {
-        float cos = (float)Math.cos(angle);
-        float sin = (float)Math.sin(angle);
+        assert (!body.m_world.isLocked());
+        if (body.m_world.isLocked()) {
+            return;
+        }
 
-        vals[COS] = cos;
-        vals[SIN] = sin;
+        body.m_xf.q.set(angle);
+
+        org.jbox2d.common.Transform.mulToOutUnsafe(body.m_xf, body.m_sweep.localCenter, body.m_sweep.c);
+        body.m_sweep.a = angle;
+
+        body.m_sweep.c0.set(body.m_sweep.c);
+        body.m_sweep.a0 = body.m_sweep.a;
     }
 
     public float getRotation() {
-        return (float)Math.atan2(vals[SIN], vals[COS]);
-    }
-
-    public void setOrientation(Vec2 orientation) {
-        vals[COS] = orientation.x;
-        vals[SIN] = orientation.y;
+        return body.m_xf.q.getAngle();
     }
 
     public Vec2 getOrientation() {
-        return orientation.set(vals[COS], vals[SIN]);
+        return orientation.set(body.m_xf.q.getCos(), body.m_xf.q.getSin());
     }
 }

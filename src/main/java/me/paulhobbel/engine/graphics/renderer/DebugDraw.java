@@ -43,8 +43,7 @@ public class DebugDraw implements Renderer {
                 AffineTransform originalTransform = g2d.getTransform();
 
                 AffineTransform bodyTransform = new AffineTransform();
-                bodyTransform.translate(b.getTransform().getPosition().x * scale, b.getTransform().getPosition().y * scale);
-                System.out.println(b.getTransform().getRotation());
+                bodyTransform.translate(b.getTransform().getTranslationX() * scale, b.getTransform().getTranslationY() * scale);
                 bodyTransform.rotate(b.getTransform().getRotation());
                 g2d.transform(bodyTransform);
 

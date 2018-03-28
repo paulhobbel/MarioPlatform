@@ -3,7 +3,6 @@ package me.paulhobbel.engine;
 import me.paulhobbel.engine.graphics.Camera;
 import me.paulhobbel.engine.graphics.renderer.CollisionRenderer;
 import me.paulhobbel.engine.graphics.renderer.DebugDraw;
-import me.paulhobbel.engine.physics.box2d.Box2DDebugRenderer;
 import me.paulhobbel.engine.physics.box2d.World;
 import me.paulhobbel.engine.physics.collisionOld.Collidable;
 import me.paulhobbel.engine.physics.collisionOld.ContactListener;
@@ -22,7 +21,7 @@ public class GameWorld {
     GameWorld() {
         camera = new Camera();
         physicsWorld = new World(new Vec2(0f, 3.8f), true);
-        Box2DDebugRenderer.getInstance().setActiveWorld(physicsWorld);
+        //Box2DDebugRenderer.getInstance().setActiveWorld(physicsWorld);
         DebugDraw.getInstance().setScale(3);
         DebugDraw.getInstance().setWorld(physicsWorld);
     }
@@ -48,11 +47,10 @@ public class GameWorld {
     public void update(double elapsedTime) {
         physicsWorld.step(1/60f, 6, 2);
 
-
         for(GameObject object : objects) {
             object.update(elapsedTime);
         }
-        tick();
+        //tick();
     }
 
     public boolean hasCollision(double x, double y) {

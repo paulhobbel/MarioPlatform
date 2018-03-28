@@ -2,14 +2,10 @@ package me.paulhobbel.marioplatform;
 
 import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.GameWorld;
-import me.paulhobbel.engine.physics.box2d.Body;
-import me.paulhobbel.engine.physics.box2d.BodyDef;
-import me.paulhobbel.engine.physics.box2d.FixtureDef;
+import me.paulhobbel.engine.physics.box2d.*;
 import me.paulhobbel.engine.window.WindowManager;
 import me.paulhobbel.marioplatform.entities.Player;
 import me.paulhobbel.marioplatform.maps.Level1;
-import org.jbox2d.collision.shapes.CircleShape;
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Settings;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
@@ -28,40 +24,35 @@ public class Main {
         Engine engine = Engine.getInstance();
         GameWorld world = engine.getWorld();
 
-//        world.addObject(new Level1());
-//        world.addObject(new Player(new Point2D.Double(40, 160)));
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(250/3, 50/3);
-        bdef.type = BodyType.DYNAMIC;
-        //bdef.fixedRotation = false;
-        //bdef.allowSleep = false;
-        Body body = world.getPhysicsWorld().createBody(bdef);
+        Body body = world.getPhysicsWorld().createBody();
+        body.setType(BodyType.DYNAMIC);
+        body.getTransform().setTranslation(new Vec2(250/3, 50/3));
+        body.getTransform().setRotation(2f);
 
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(5);
+        Fixture fixture = body.createFixture(Geometry.createCirle(5));
+        fixture.setRestitution(2f);
+        fixture.setFriction(0.6f);
+        fixture.setDensity(0.1f);
 
-        fdef.shape = shape;
-        fdef.restitution = 0.6f;
-        fdef.friction = 0.6f;
-        fdef.density = 0.1f;
-        body.createFixture(fdef);
+        Body floorBody = world.getPhysicsWorld().createBody();
+        floorBody.setType(BodyType.STATIC);
+        floorBody.getTransform().setTranslation(new Vec2(80+50/3, 400/3));
+        floorBody.getTransform().setRotation(0.1f);
+        floorBody.createFixture(Geometry.createRectangle(500/3, 10/3));
 
-        BodyDef floordef = new BodyDef();
-        floordef.position.set(80+50/3, 400/3);
-        floordef.type = BodyType.STATIC;
-        floordef.angle = 0.1f;
-        Body floorBody = world.getPhysicsWorld().createBody(floordef);
-
-        FixtureDef floorFixtureDef = new FixtureDef();
-        PolygonShape shape1 = new PolygonShape();
-        shape1.setAsBox(500/3, 10/3);
-
-        floorFixtureDef.shape = shape1;
-        floorBody.createFixture(floorFixtureDef);
+        Body topBody = world.getPhysicsWorld().createBody();
+        topBody.setType(BodyType.STATIC);
+        topBody.getTransform().setTranslation(80+50/3, 20/3);
+        topBody.getTransform().setRotation(0.1f);
+        topBody.createFixture(Geometry.createRectangle(500/3, 10/3));
 
         Settings.maxPolygonVertices = 50;
 
+        world.addObject(new Level1());
+        world.addObject(new Player(new Point2D.Double(40, 160)));
+
         engine.start();
+
+        //body.applyLinearImpulse(new Vec2(0, 300f), body.getWorldCenter(), true);
     }
 }
