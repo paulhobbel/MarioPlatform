@@ -1,5 +1,6 @@
 package me.paulhobbel.engine.graphics.renderer;
 
+import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.graphics.Renderer;
 import me.paulhobbel.engine.physics.box2d.Body;
 import me.paulhobbel.engine.physics.box2d.Fixture;
@@ -14,7 +15,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DebugDraw implements Renderer {
@@ -23,6 +23,10 @@ public class DebugDraw implements Renderer {
     public static DebugDraw getInstance() {
         if(instance == null) instance = new DebugDraw();
         return instance;
+    }
+
+    private DebugDraw() {
+        scale = Engine.PPM;
     }
 
     private World world;
@@ -47,20 +51,21 @@ public class DebugDraw implements Renderer {
                 bodyTransform.rotate(b.getTransform().getRotation());
                 g2d.transform(bodyTransform);
 
+                Color oldColor = g2d.getColor();
 
                 for (Fixture fixture : b.getFixtureList()) {
+                    g2d.setColor(Color.GREEN);
                     g2d.draw(AffineTransform.getScaleInstance(scale, scale).createTransformedShape(getShape(fixture)));
 
                     AffineTransform tx = AffineTransform.getScaleInstance(scale, scale);
                     tx.rotate(b.getTransform().getOrientation().x, b.getTransform().getOrientation().y);
 
-                    Color oldColor = g2d.getColor();
                     g2d.setColor(Color.RED);
                     g2d.draw(tx.createTransformedShape(new Line2D.Double(0, 0, 2, 0)));
-                    g2d.setColor(oldColor);
+
                 }
 
-
+                g2d.setColor(oldColor);
                 g2d.setTransform(originalTransform);
             }
         }

@@ -1,24 +1,23 @@
 package me.paulhobbel.marioplatform.entities;
 
+import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.objects.AnimatedSprite;
+import me.paulhobbel.engine.physics.box2d.Fixture;
+import me.paulhobbel.engine.physics.box2d.Geometry;
 import me.paulhobbel.engine.physics.collisionOld.Collidable;
+import org.jbox2d.dynamics.BodyType;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-public class Entity<T> extends AnimatedSprite<T> implements Collidable {
+public class Entity<T> extends AnimatedSprite<T> {
     public Entity(Point2D position, int layer, String spriteFile, int rows, int columns) {
         super(position, layer, spriteFile, rows, columns);
-    }
 
-//    //@Override
-//    public void onCollision(Contact contact) {
-//        if(this instanceof Player)
-//            System.out.println(contact);
-//    }
+        body.setType(BodyType.DYNAMIC);
+        Fixture fixture = body.createFixture(Geometry.createRectangle(getImage().getWidth() * 3 / Engine.PPM, getImage().getHeight() * 3 / Engine.PPM));
 
-    @Override
-    public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(position.getX(), position.getY(), 16, 16);
+        fixture.setRestitution(0.1f);
+        fixture.setFriction(0.1f);
     }
 }

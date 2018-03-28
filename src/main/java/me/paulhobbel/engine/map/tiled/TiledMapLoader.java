@@ -221,7 +221,7 @@ public class TiledMapLoader {
             JsonArray points = object.getJsonArray("polygon");
             for(int i = 0; i < points.size(); i++) {
                 JsonObject point = points.getJsonObject(i);
-                polygon.addPoint(x + point.getInt("x"), y + point.getInt("y"));
+                polygon.addPoint(point.getInt("x"), point.getInt("y"));
             }
 
             mapObject = new PolygonMapObject(polygon);

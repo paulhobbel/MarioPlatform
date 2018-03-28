@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Engine implements ActionListener {
+
+    public static final float PPM = 10;
+
     private static Engine instance;
 
     private Timer gameLoop;

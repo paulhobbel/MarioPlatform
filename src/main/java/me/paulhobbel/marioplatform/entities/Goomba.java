@@ -7,7 +7,7 @@ import me.paulhobbel.marioplatform.entities.Goomba.State;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-public class Goomba extends AnimatedSprite<State> {
+public class Goomba extends Entity<State> {
     public enum State {
         WALKING
     }

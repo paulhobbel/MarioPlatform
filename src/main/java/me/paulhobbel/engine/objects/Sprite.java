@@ -1,11 +1,14 @@
 package me.paulhobbel.engine.objects;
 
+import me.paulhobbel.engine.Engine;
 import me.paulhobbel.engine.GameObject;
-import me.paulhobbel.engine.graphics.renderer.CollisionRenderer;
 import me.paulhobbel.engine.graphics.renderer.SpriteRenderer;
+import me.paulhobbel.engine.physics.box2d.Body;
+import me.paulhobbel.engine.physics.box2d.BodyDef;
 import me.paulhobbel.engine.physics.collisionOld.Collidable;
 
 import javax.imageio.ImageIO;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -15,6 +18,8 @@ public class Sprite extends GameObject {
     private int layer;
     private int frame = 0;
     protected BufferedImage[] sprites;
+
+    protected Body body;
 
     private static HashMap<String, BufferedImage[]> imageCache = new HashMap<>();
 
@@ -48,6 +53,11 @@ public class Sprite extends GameObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        BodyDef def = new BodyDef();
+        def.position.set(((float) position.getX() + (getImage().getWidth() / 2)) * 3f / Engine.PPM, ((float) position.getY() + getImage().getHeight() / 2 ) * 3f / Engine.PPM);
+
+        body = world.getPhysicsWorld().createBody(def);
     }
 
     public Integer getLayer() {
@@ -61,10 +71,6 @@ public class Sprite extends GameObject {
     @Override
     public void resume() {
         SpriteRenderer.getInstance().addSprite(this);
-        if(Collidable.class.isInstance(this)) {
-            System.out.println(this);
-            CollisionRenderer.getInstance().addCollidable((Collidable) this);
-        }
     }
 
 //    @Override
@@ -74,5 +80,31 @@ public class Sprite extends GameObject {
 
     public void setFrame(int frame) {
         this.frame = frame;
+    }
+
+    @Override
+    public AffineTransform getTransform() {
+
+        AffineTransform tx = new AffineTransform();
+//        tx.translate(body.getTransform().getTranslationX() * Engine.PPM, body.getTransform().getTranslationY() * Engine.PPM);
+//        tx.rotate(body.getTransform().getRotation());
+//        tx.scale(getScale(), getScale());
+
+        tx.translate(
+                body.getTransform().getTranslationX() * Engine.PPM,
+                body.getTransform().getTranslationY() * Engine.PPM
+        );
+        tx.rotate(body.getTransform().getRotation());
+        tx.scale(getScale(), getScale());
+        tx.translate(-getImage().getWidth() / 2, -getImage().getHeight() / 2);
+
+//        AffineTransform tx = new AffineTransform();
+//        tx.translate(body.getTransform().getTranslationX() * 3, body.getTransform().getTranslationY() * 3);
+//        tx.rotate(body.getTransform().getRotation());
+//        tx.scale(getScale(), getScale());
+//        tx.translate(-getImage().getWidth()/2, -16*3/2);
+
+
+        return tx;
     }
 }

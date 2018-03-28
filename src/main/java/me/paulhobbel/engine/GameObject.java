@@ -2,10 +2,8 @@ package me.paulhobbel.engine;
 
 import me.paulhobbel.engine.component.Component;
 
-import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class GameObject {
@@ -13,6 +11,8 @@ public class GameObject {
     protected Point2D position;
     private double scale;
     private double rotation;
+
+    protected GameWorld world;
 
     private ArrayList<Component> components = new ArrayList<>();
 
@@ -24,6 +24,7 @@ public class GameObject {
         position = initialPosition;
         scale = 1;
         rotation = 0;
+        world = Engine.getInstance().getWorld();
     }
 
     public void addComponent(Component component) {
@@ -61,6 +62,7 @@ public class GameObject {
         for(Component component : components) {
             component.start();
         }
+        resume();
     }
 
     protected void resume(){

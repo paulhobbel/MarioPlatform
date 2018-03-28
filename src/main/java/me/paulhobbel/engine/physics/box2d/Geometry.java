@@ -6,7 +6,7 @@ import org.jbox2d.common.Vec2;
 
 public class Geometry {
 
-    public static CircleShape createCirle(float radius) {
+    public static CircleShape createCircle(float radius) {
         CircleShape circle = new CircleShape();
         circle.setRadius(radius);
         System.out.println(circle);
@@ -14,6 +14,7 @@ public class Geometry {
     }
 
     public static PolygonShape createPolygon(Vec2 ...vertices) {
+        System.err.println("Polygons are not fully supported, please do not use them!");
         PolygonShape polygon = new PolygonShape();
         polygon.set(vertices, vertices.length);
         return polygon;
@@ -25,7 +26,7 @@ public class Geometry {
 
     public static PolygonShape createRectangle(float width, float height) {
         PolygonShape rectangle = new PolygonShape();
-        rectangle.setAsBox(width, height);
+        rectangle.setAsBox(width / 2, height / 2);
         return rectangle;
     }
 
