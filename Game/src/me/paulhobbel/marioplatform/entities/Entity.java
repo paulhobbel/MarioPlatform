@@ -11,6 +11,10 @@ public class Entity<T> extends AnimatedSprite<T> {
     public Entity(Vec2 position, int layer, String spriteFile, int rows, int columns) {
         super(position, layer, spriteFile, rows, columns);
 
+        defineBody(position);
+    }
+
+    protected void defineBody(Vec2 position) {
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.position.set((position.x + (getImage().getWidth() / 2)) * 3f / Engine.PPM, (position.y + (getImage().getWidth() / 2)) * 3f / Engine.PPM);
