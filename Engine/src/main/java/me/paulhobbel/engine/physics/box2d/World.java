@@ -47,7 +47,7 @@ public class World {
                 @Override
                 public void endContact(org.jbox2d.dynamics.contacts.Contact contact) {
                     tmpContact.contact = contact;
-                    listener.beginContact(tmpContact);
+                    listener.endContact(tmpContact);
                 }
 
                 @Override

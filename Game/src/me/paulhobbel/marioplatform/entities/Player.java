@@ -4,8 +4,11 @@ import me.paulhobbel.engine.core.Engine;
 import me.paulhobbel.engine.graphics.Animation.PlayMode;
 import me.paulhobbel.engine.input.Input;
 import me.paulhobbel.engine.physics.box2d.BodyDef;
+import me.paulhobbel.engine.physics.box2d.FixtureDef;
 import me.paulhobbel.engine.physics.box2d.Geometry;
+import me.paulhobbel.marioplatform.MarioGame;
 import me.paulhobbel.marioplatform.entities.Player.State;
+import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
@@ -14,7 +17,7 @@ import java.awt.geom.AffineTransform;
 
 public class Player extends Entity<State> {
     public enum State {
-        IDLE, WALKING, JUMPING
+        IDLE, WALKING, JUMPING, FALLING
     }
 
     public Player(Vec2 position) {
@@ -35,7 +38,17 @@ public class Player extends Entity<State> {
         def.position.set((position.x + 8) * 3f / Engine.PPM, (position.y + 8) * 3f / Engine.PPM);
         body = world.getPhysicsWorld().createBody(def);
 
-        body.createFixture(Geometry.createRectangle(16 * 3 / Engine.PPM, 16 * 3 / Engine.PPM));
+        FixtureDef fdef = new FixtureDef();
+        fdef.filter.categoryBits = MarioGame.MARIO_BIT;
+        fdef.filter.maskBits = MarioGame.DEFAULT_BIT | MarioGame.BRICK_BIT | MarioGame.COIN_BIT;
+
+        fdef.shape = Geometry.createCircle(6 * 3 / Engine.PPM);
+        //fdef.shape = Geometry.createRectangle(13 * 3 / Engine.PPM, 16 * 3 / Engine.PPM);
+        body.createFixture(fdef);
+
+        fdef.shape = Geometry.createEdge(new Vec2(-2 * 3f / Engine.PPM, -6 * 3 / Engine.PPM), new Vec2(2 * 3f / Engine.PPM, -6 * 3 / Engine.PPM));
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("head");
     }
 
     @Override
@@ -43,9 +56,9 @@ public class Player extends Entity<State> {
         super.update(elapsedTime);
 
         Input input = Input.getInstance();
-        if (input.isKeyPressed(KeyEvent.VK_D) && body.getLinearVelocity().x <= 4f) {
+        if (input.isKeyPressed(KeyEvent.VK_D) && body.getLinearVelocity().x <= 3f) {
             body.applyForce(new Vec2(4f,0), body.getWorldCenter());
-        } else if (input.isKeyPressed(KeyEvent.VK_A) && body.getLinearVelocity().x >= -4f) {
+        } else if (input.isKeyPressed(KeyEvent.VK_A) && body.getLinearVelocity().x >= -3f) {
             body.applyForce(new Vec2(-4f,0), body.getWorldCenter());
         }
 
@@ -53,7 +66,7 @@ public class Player extends Entity<State> {
             body.applyLinearImpulse(new Vec2(0, -7f), body.getWorldCenter(), true);
         }
 
-        if(Math.abs(body.getLinearVelocity().y) > 0) {
+        if(Math.abs(body.getLinearVelocity().y) > 1) {
             setAnimation(State.JUMPING);
         } else if(Math.abs(body.getLinearVelocity().x) > 0) {
             setAnimation(State.WALKING);
@@ -69,7 +82,7 @@ public class Player extends Entity<State> {
     @Override
     public AffineTransform getTransform() {
         AffineTransform tx = super.getTransform();
-        tx.translate(0, -8);
+        tx.translate(0, -10);
         if(body.getLinearVelocity().x < 0) {
             tx.translate(getImage().getWidth(), 0);
             tx.scale(-1, 1);

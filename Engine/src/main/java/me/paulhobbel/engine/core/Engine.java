@@ -58,24 +58,4 @@ public class Engine implements Disposable {
     public void dispose() {
 
     }
-
-    public static void main(String[] args) {
-        Engine engine = new Engine();
-
-        engine.settings.width = 816;
-        engine.settings.height = 672;
-        engine.settings.scale = 4f;
-        engine.settings.fps = 60;
-
-        World world = engine.getActiveWorld().getPhysicsWorld();
-
-        BodyDef def = new BodyDef();
-        def.position.set(100 / Engine.PPM, 100 / Engine.PPM);
-        def.type = BodyType.DYNAMIC;
-
-        Body body = world.createBody(def);
-        body.createFixture(Geometry.createSquare(100 / Engine.PPM));
-
-        engine.start();
-    }
 }

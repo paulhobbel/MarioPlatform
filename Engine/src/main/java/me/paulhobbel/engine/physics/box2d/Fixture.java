@@ -44,6 +44,14 @@ public class Fixture {
         return fixture.getFilterData();
     }
 
+    public void setUserData(Object data) {
+        fixture.setUserData(data);
+    }
+
+    public Object getUserData() {
+        return fixture.getUserData();
+    }
+
     public void setDensity(float density) {
         fixture.setDensity(density);
         fixture.m_body.resetMassData();
