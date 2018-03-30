@@ -26,9 +26,11 @@ public class GamePanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setTransform(Engine.getInstance().getActiveWorld().getCamera().getTransform());
 
-        //MapRenderer.getInstance().render(g2d);
+        MapRenderer.getInstance().render(g2d);
         SpriteRenderer.getInstance().render(g2d);
 
         DebugDraw.getInstance().render(g2d);
+
+        Toolkit.getDefaultToolkit().sync();
     }
 }

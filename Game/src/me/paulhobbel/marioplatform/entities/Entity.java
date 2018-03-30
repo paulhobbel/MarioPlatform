@@ -16,7 +16,7 @@ public class Entity<T> extends AnimatedSprite<T> {
 
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
-        def.position.set((position.x + (getImage().getWidth() / 2)) * 3f / Engine.PPM, (position.x + (getImage().getWidth() / 2)) * 3f / Engine.PPM);
+        def.position.set((position.x + (getImage().getWidth() / 2)) * 3f / Engine.PPM, (position.y + (getImage().getWidth() / 2)) * 3f / Engine.PPM);
         body = world.getPhysicsWorld().createBody(def);
 
         Fixture fixture = body.createFixture(Geometry.createRectangle(getImage().getWidth() * 3 / Engine.PPM, getImage().getHeight() * 3 / Engine.PPM));
