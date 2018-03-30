@@ -10,11 +10,10 @@ public class GameWindow extends JFrame {
         panel = new GamePanel(width, height);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        add(panel, BorderLayout.CENTER);
+        setContentPane(panel);
+        setResizable(false);
         pack();
         setLocationRelativeTo(null);
-        setResizable(false);
     }
 
     public GamePanel getPanel() {
