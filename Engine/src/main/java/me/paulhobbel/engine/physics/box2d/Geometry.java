@@ -15,7 +15,6 @@ public class Geometry {
     }
 
     public static PolygonShape createPolygon(Vec2 ...vertices) {
-        System.err.println("Polygons are not fully supported, please do not use them!");
         PolygonShape polygon = new PolygonShape();
         polygon.set(vertices, vertices.length);
         return polygon;

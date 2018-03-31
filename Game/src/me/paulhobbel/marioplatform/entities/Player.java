@@ -35,15 +35,20 @@ public class Player extends Entity<State> {
     protected void defineBody(Vec2 position) {
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
-        def.position.set((position.x + 8) * 3f / Engine.PPM, (position.y + 8) * 3f / Engine.PPM);
+        def.position.set((position.x + 3) * 3f / Engine.PPM, (position.y + 3) * 3f / Engine.PPM);
         body = world.getPhysicsWorld().createBody(def);
 
         FixtureDef fdef = new FixtureDef();
         fdef.filter.categoryBits = MarioGame.MARIO_BIT;
-        fdef.filter.maskBits = MarioGame.DEFAULT_BIT | MarioGame.BRICK_BIT | MarioGame.COIN_BIT;
+        fdef.filter.maskBits =
+                MarioGame.DEFAULT_BIT |
+                MarioGame.BRICK_BIT |
+                MarioGame.COIN_BIT |
+                MarioGame.ENEMY_BIT |
+                MarioGame.OBJECT_BIT |
+                MarioGame.ENEMY_HEAD_BIT;
 
         fdef.shape = Geometry.createCircle(6 * 3 / Engine.PPM);
-        //fdef.shape = Geometry.createRectangle(13 * 3 / Engine.PPM, 16 * 3 / Engine.PPM);
         body.createFixture(fdef);
 
         fdef.shape = Geometry.createEdge(new Vec2(-2 * 3f / Engine.PPM, -6 * 3 / Engine.PPM), new Vec2(2 * 3f / Engine.PPM, -6 * 3 / Engine.PPM));

@@ -34,7 +34,7 @@ class Level extends Map {
                         new Ground(object.getShape().getBounds());
                         break;
                     case "Pipe":
-                        new Pipe(position, object.getShape());
+                        new Pipe(object.getShape().getBounds());
                         break;
                     case "Brick":
                         new Brick(getMap(), object.getShape().getBounds());
@@ -43,7 +43,7 @@ class Level extends Map {
                         new Coin(getMap(), object.getShape().getBounds());
                         break;
                     case "Goomba":
-                        //world.addObject(new Goomba(position));
+                        world.addObject(new Goomba(position));
                         break;
                     default:
 //                        GameObject gameObject = new GameObject(position);

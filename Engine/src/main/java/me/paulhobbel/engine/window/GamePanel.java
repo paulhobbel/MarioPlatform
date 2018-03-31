@@ -40,7 +40,7 @@ public class GamePanel extends JPanel {
         MapRenderer.getInstance().render(g2d);
         SpriteRenderer.getInstance().render(g2d);
 
-        DebugRenderer.getInstance().render(g2d);
+        //DebugRenderer.getInstance().render(g2d);
 
         Toolkit.getDefaultToolkit().sync();
     }
