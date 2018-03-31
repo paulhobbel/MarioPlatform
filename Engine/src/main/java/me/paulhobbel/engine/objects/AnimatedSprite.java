@@ -80,5 +80,9 @@ public class AnimatedSprite<T> extends Sprite {
 
         return currentAnimation.getFrame(stateTimer);
     }
+
+    public double getStateTimer() {
+        return stateTimer;
+    }
 }
 

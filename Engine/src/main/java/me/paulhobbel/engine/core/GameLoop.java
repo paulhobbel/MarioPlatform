@@ -51,14 +51,14 @@ public class GameLoop implements Runnable {
 
                 // TODO: Update game
                 engine.activeWorld.update(1.0 / (engine.settings.fps * (1000 * passedTime)));
-                engine.window.setTitle(String.format("%s FPS: %.2f", engine.settings.title, fps / (1000 * passedTime)));
+                //engine.window.setTitle(String.format("%s FPS: %.2f", engine.settings.title, fps / (1000 * passedTime)));
                 Input.getInstance().update();
 
                 if(frameTime >= 1.0) {
                     frameTime = 0;
                     fps = frames;
                     frames = 0;
-
+                    engine.window.setTitle(String.format("%s FPS: %.2f", engine.settings.title, fps));
                     //System.out.println("FPS: " + fps);
                 }
             }

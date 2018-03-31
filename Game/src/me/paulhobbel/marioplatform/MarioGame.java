@@ -23,7 +23,7 @@ public class MarioGame {
         engine.settings.width = 912;
         engine.settings.height = 672;
         engine.settings.scale = 4f;
-        engine.settings.fps = 120;
+        engine.settings.fps = 60;
 
         GameWorld world = engine.getActiveWorld();
 

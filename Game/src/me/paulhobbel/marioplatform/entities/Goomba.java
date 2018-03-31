@@ -63,9 +63,6 @@ public class Goomba extends Entity<State> {
         fdef.restitution = 0.5f;
         fdef.filter.categoryBits = MarioGame.ENEMY_HEAD_BIT;
         body.createFixture(fdef).setUserData(this);
-//        fdef.shape = Geometry.createEdge(new Vec2(-2 * 3f / Engine.PPM, -6 * 3 / Engine.PPM), new Vec2(2 * 3f / Engine.PPM, -6 * 3 / Engine.PPM));
-//        fdef.isSensor = true;
-//        body.createFixture(fdef).setUserData("head");
     }
 
     @Override
@@ -76,12 +73,13 @@ public class Goomba extends Entity<State> {
             world.getPhysicsWorld().destroyBody(body);
             destroyed = true;
             setAnimation(State.SMASHED);
-        }
-        if(!destroyed) {
+        } else if(destroyed && getStateTimer() > 1) {
+            //world.removeObject(this);
+            // TODO: Make it possible to remove a gameobject from the world
+            pause();
+        } else if(!destroyed) {
             body.setLinearVelocity(velocity.x, body.getLinearVelocity().y);
         }
-
-        //body.set
     }
 
     @Override

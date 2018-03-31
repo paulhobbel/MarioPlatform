@@ -62,10 +62,10 @@ public class Sprite extends GameObject {
         SpriteRenderer.getInstance().addSprite(this);
     }
 
-//    @Override
-//    public void pause() {
-//        SpriteRenderer.getInstance().removeSprite(this);
-//    }
+    //@Override
+    public void pause() {
+        SpriteRenderer.getInstance().removeSprite(this);
+    }
 
     public void setFrame(int frame) {
         this.frame = frame;

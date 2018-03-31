@@ -26,6 +26,11 @@ public class GameWorld {
         object.resume();
     }
 
+    public void removeObject(GameObject object) {
+        objects.remove(object);
+        object.pause();
+    }
+
     public Camera getCamera() {
         return camera;
     }

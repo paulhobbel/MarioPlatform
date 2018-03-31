@@ -10,7 +10,6 @@ public class Geometry {
     public static CircleShape createCircle(float radius) {
         CircleShape circle = new CircleShape();
         circle.setRadius(radius);
-        System.out.println(circle);
         return circle;
     }
 
