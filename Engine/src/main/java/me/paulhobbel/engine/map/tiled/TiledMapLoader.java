@@ -11,6 +11,8 @@ import me.paulhobbel.engine.map.objects.PolygonMapObject;
 import me.paulhobbel.engine.map.objects.RectangleMapObject;
 import me.paulhobbel.engine.map.tiled.TiledMapTileLayer.Cell;
 import me.paulhobbel.engine.map.tiled.strategies.OrthogonalTiledMapRenderStrategy;
+import me.paulhobbel.engine.map.tiled.tiles.AnimatedTiledMapTile;
+import me.paulhobbel.engine.map.tiled.tiles.StaticTiledMapTile;
 
 import javax.imageio.ImageIO;
 import javax.json.*;
@@ -115,13 +117,43 @@ public class TiledMapLoader {
 
             for(int y = margin; y <= stopHeight; y += tileHeight + spacing) {
                 for(int x = margin; x <= stopWidth; x += tileWidth + spacing) {
-                    TiledMapTile tile = new TiledMapTile();
+                    TiledMapTile tile = new StaticTiledMapTile(image.getSubimage(x, y, tileWidth, tileHeight));
                     tile.setId(id);
-                    tile.setImage(image.getSubimage(x, y, tileWidth, tileHeight));
                     tileset.putTile(id++, tile);
                 }
             }
         }
+
+        if(object.containsKey("tiles")) {
+            JsonObject tiles = object.getJsonObject("tiles");
+
+            for(String id : tiles.keySet()) {
+                JsonObject tileObject = tiles.getJsonObject(id);
+                TiledMapTile tile = tileset.getTile(firstGid + Integer.parseInt(id));
+
+                if(tile != null && tileObject.containsKey("animation")) {
+                    JsonArray animations = tileObject.getJsonArray("animation");
+
+                    System.out.println(animations);
+
+                    int[] delays = new int[animations.size()];
+                    StaticTiledMapTile[] frames = new StaticTiledMapTile[animations.size()];
+
+                    for(int i = 0; i < animations.size(); i++) {
+                        JsonObject animation = animations.getJsonObject(i);
+                        frames[i] = (StaticTiledMapTile) tileset.getTile(firstGid + animation.getInt("tileid"));
+                        delays[i] = animation.getInt("duration");
+                    }
+
+                    AnimatedTiledMapTile animatedTile = new AnimatedTiledMapTile(delays, frames);
+                    animatedTile.setId(tile.getId());
+
+                    tileset.putTile(tile.getId(), animatedTile);
+                }
+            }
+        }
+
+        System.out.println(tileset);
 
         // TODO: Read tileset and tile properties
 

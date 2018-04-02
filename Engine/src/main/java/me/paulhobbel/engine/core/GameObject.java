@@ -43,8 +43,6 @@ public class GameObject {
     public AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
 
-        //System.out.println(body.getTransform().getTranslationX());
-
         tx.translate(
                 body.getTransform().getTranslationX() * Engine.PPM,
                 body.getTransform().getTranslationY() * Engine.PPM

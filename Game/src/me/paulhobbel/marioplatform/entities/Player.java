@@ -8,7 +8,6 @@ import me.paulhobbel.engine.physics.box2d.FixtureDef;
 import me.paulhobbel.engine.physics.box2d.Geometry;
 import me.paulhobbel.marioplatform.MarioGame;
 import me.paulhobbel.marioplatform.entities.Player.State;
-import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
@@ -35,6 +34,7 @@ public class Player extends Entity<State> {
     protected void defineBody(Vec2 position) {
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
+
         def.position.set((position.x + 3) * 3f / Engine.PPM, (position.y + 3) * 3f / Engine.PPM);
         body = world.getPhysicsWorld().createBody(def);
 
@@ -62,9 +62,9 @@ public class Player extends Entity<State> {
 
         Input input = Input.getInstance();
         if (input.isKeyPressed(KeyEvent.VK_D) && body.getLinearVelocity().x <= 3f) {
-            body.applyForce(new Vec2(4f,0), body.getWorldCenter());
+            body.applyForce(new Vec2(5f,0), body.getWorldCenter());
         } else if (input.isKeyPressed(KeyEvent.VK_A) && body.getLinearVelocity().x >= -3f) {
-            body.applyForce(new Vec2(-4f,0), body.getWorldCenter());
+            body.applyForce(new Vec2(-5f,0), body.getWorldCenter());
         }
 
         if(input.isKeyDown(KeyEvent.VK_SPACE) && Math.abs(body.getLinearVelocity().y) == 0) {

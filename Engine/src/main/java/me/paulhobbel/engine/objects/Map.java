@@ -2,14 +2,15 @@ package me.paulhobbel.engine.objects;
 
 import me.paulhobbel.engine.core.GameObject;
 import me.paulhobbel.engine.graphics.renderer.MapRenderer;
-import me.paulhobbel.engine.map.tiled.TiledMap;
-import me.paulhobbel.engine.map.tiled.TiledMapLoader;
+import me.paulhobbel.engine.map.MapLayer;
+import me.paulhobbel.engine.map.tiled.*;
 import me.paulhobbel.engine.physics.box2d.BodyDef;
 import me.paulhobbel.engine.physics.box2d.Geometry;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 public class Map extends GameObject {
     TiledMap map;
@@ -35,7 +36,12 @@ public class Map extends GameObject {
         MapRenderer.getInstance().setMap(this);
     }
 
-//    @Override
+    @Override
+    public void update(double elapsedTime) {
+        super.update(elapsedTime);
+    }
+
+    //    @Override
 //    public void pause() {
 //        MapRenderer.getInstance().setMap(null);
 //    }
