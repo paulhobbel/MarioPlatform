@@ -1,7 +1,8 @@
 package me.paulhobbel.engine.core;
 
 import me.paulhobbel.engine.graphics.Camera;
-import me.paulhobbel.engine.graphics.renderer.DebugDraw;
+import me.paulhobbel.engine.graphics.renderer.DebugRenderer;
+import me.paulhobbel.engine.physics.box2d.Body;
 import me.paulhobbel.engine.physics.box2d.World;
 import org.jbox2d.common.Vec2;
 
@@ -16,14 +17,30 @@ public class GameWorld {
 
     GameWorld() {
         camera = new Camera();
-        physicsWorld = new World(new Vec2(0f, 9.8f), true);
-        DebugDraw.getInstance().setScale(Engine.PPM);
-        DebugDraw.getInstance().setWorld(physicsWorld);
+        physicsWorld = new World(new Vec2(0f, 9.8f), false);
+        DebugRenderer.getInstance().setScale(Engine.PPM);
+        DebugRenderer.getInstance().setWorld(physicsWorld);
     }
 
     public void addObject(GameObject object) {
         objects.add(object);
         object.resume();
+    }
+
+    public void removeObject(GameObject object) {
+        objects.remove(object);
+        object.pause();
+    }
+
+    public void resetWorld() {
+        for(GameObject object : objects) {
+            object.pause();
+        }
+        objects.clear();
+        camera.getPosition().setLocation(0, 0);
+        for(Body body : physicsWorld.getBodyList()) {
+            physicsWorld.destroyBody(body);
+        }
     }
 
     public Camera getCamera() {

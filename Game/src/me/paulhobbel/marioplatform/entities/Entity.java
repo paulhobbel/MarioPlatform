@@ -15,6 +15,8 @@ public class Entity<T> extends AnimatedSprite<T> {
     }
 
     protected void defineBody(Vec2 position) {
+        System.out.println("body created");
+
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.position.set((position.x + (getImage().getWidth() / 2)) * 3f / Engine.PPM, (position.y + (getImage().getWidth() / 2)) * 3f / Engine.PPM);

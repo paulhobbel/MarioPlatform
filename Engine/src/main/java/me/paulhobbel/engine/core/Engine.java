@@ -18,7 +18,9 @@ public class Engine implements Disposable {
         return instance;
     }
 
+    Application application;
     GameWindow window;
+
     private GameLoop loop;
 
     public final EngineSettings settings = new EngineSettings();
@@ -38,7 +40,7 @@ public class Engine implements Disposable {
         activeWorld = worlds.get(0);
     }
 
-    public void start() {
+    private void start() {
         window = WindowManager.getInstance().createWindow(settings.width, settings.height);
         window.setTitle(settings.title);
         window.setVisible(true);
@@ -54,28 +56,14 @@ public class Engine implements Disposable {
         return activeWorld;
     }
 
+    public void setApplication(Application application) {
+        this.application = application;
+        this.application.init();
+        start();
+    }
+
     @Override
     public void dispose() {
 
-    }
-
-    public static void main(String[] args) {
-        Engine engine = new Engine();
-
-        engine.settings.width = 816;
-        engine.settings.height = 672;
-        engine.settings.scale = 4f;
-        engine.settings.fps = 60;
-
-        World world = engine.getActiveWorld().getPhysicsWorld();
-
-        BodyDef def = new BodyDef();
-        def.position.set(100 / Engine.PPM, 100 / Engine.PPM);
-        def.type = BodyType.DYNAMIC;
-
-        Body body = world.createBody(def);
-        body.createFixture(Geometry.createSquare(100 / Engine.PPM));
-
-        engine.start();
     }
 }

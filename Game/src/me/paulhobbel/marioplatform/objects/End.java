@@ -4,9 +4,9 @@ import me.paulhobbel.marioplatform.MarioGame;
 
 import java.awt.*;
 
-public class Pipe extends StaticObject {
-    public Pipe(Rectangle bounds) {
+public class End extends StaticObject {
+    public End(Rectangle bounds) {
         super(bounds);
-        setCategoryFilter(MarioGame.OBJECT_BIT);
+        setCategoryFilter(MarioGame.END_BIT);
     }
 }

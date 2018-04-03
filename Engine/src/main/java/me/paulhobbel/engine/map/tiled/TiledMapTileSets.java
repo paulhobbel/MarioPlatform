@@ -1,32 +1,28 @@
 package me.paulhobbel.engine.map.tiled;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class TiledMapTileSets implements Iterable<TiledMapTileSet> {
-    private ArrayList<TiledMapTileSet> tilesets = new ArrayList<>();
+    private Map<String, TiledMapTileSet> tilesets = new HashMap<>();
 
-    public TiledMapTileSet getTileSet(int index) {
-        return tilesets.get(index);
+    public TiledMapTileSet getTileSet(String name) {
+        return tilesets.get(name);
     }
 
     public void addTileSet(TiledMapTileSet tileset) {
-        tilesets.add(tileset);
+        tilesets.put(tileset.getName(), tileset);
     }
 
-    public void removeTileSet(int index) {
-        tilesets.remove(index);
-    }
-
-    public void removeTileSet(TiledMapTileSet tileset) {
-        tilesets.remove(tileset);
+    public void removeTileSet(String name) {
+        tilesets.remove(name);
     }
 
     public TiledMapTile getTile(int id) {
-        // Go backwards through the array
-        for(int i = tilesets.size() - 1; i >= 0; i--) {
-            TiledMapTileSet tileset = tilesets.get(i);
-            TiledMapTile tile = tileset.getTile(id);
+        for(TiledMapTileSet tileSet : tilesets.values()) {
+            TiledMapTile tile = tileSet.getTile(id);
             if(tile != null) {
                 return tile;
             }
@@ -38,6 +34,6 @@ public class TiledMapTileSets implements Iterable<TiledMapTileSet> {
 
     @Override
     public Iterator<TiledMapTileSet> iterator() {
-        return tilesets.iterator();
+        return tilesets.values().iterator();
     }
 }

@@ -1,8 +1,10 @@
 package me.paulhobbel.engine.map.tiled.strategies;
 
+import me.paulhobbel.engine.core.Engine;
 import me.paulhobbel.engine.map.MapLayer;
 import me.paulhobbel.engine.map.MapRenderStrategy;
 import me.paulhobbel.engine.map.tiled.TiledMapTileLayer;
+import me.paulhobbel.engine.map.tiled.tiles.AnimatedTiledMapTile;
 import me.paulhobbel.engine.objects.Map;
 
 import java.awt.*;
@@ -10,16 +12,26 @@ import java.awt.geom.AffineTransform;
 
 public class OrthogonalTiledMapRenderStrategy extends MapRenderStrategy {
 
+    private int offset;
+
+    public OrthogonalTiledMapRenderStrategy() {
+        offset = Engine.getInstance().settings.width / (16 * 3) + 1;
+    }
+
     private void renderTileLayer(Graphics2D g2d, Map map, TiledMapTileLayer layer) {
         int height = layer.getHeight();
         int width = layer.getWidth();
         int tileWidth = layer.getTileWidth();
         int tileHeight = layer.getTileHeight();
-        for(int y = 0; y < height; y++) {
-            for(int x = 0; x < width; x++) {
+
+        double xTranslation = -g2d.getTransform().getTranslateX() / 3d;
+        int xStart = (int) (xTranslation / 16);
+
+        for(int x = xStart; x < xStart + 20; x++) {
+            for(int y = 0; y < height; y++) {
                 TiledMapTileLayer.Cell cell = layer.getCell(x, y);
 
-                if(cell != null) {
+                if(cell != null && cell.getTile() != null) {
                     AffineTransform tx = map.getTransform();
                     tx.translate(x * tileWidth, y * tileHeight);
 
@@ -29,33 +41,16 @@ public class OrthogonalTiledMapRenderStrategy extends MapRenderStrategy {
         }
     }
 
-//    private void renderObjectGroup(Graphics2D g2d, MapComponent map, MapLayer layer) {
-//        AffineTransform tx = AffineTransform.getScaleInstance(3, 3);
-//        g2d.setColor(Color.RED);
-//        for(MapObject object : layer.getObjects()) {
-//            if(object instanceof RectangleMapObject) {
-//                g2d.draw(tx.createTransformedShape(((RectangleMapObject) object).getRectangle()));
-//            } else if(object instanceof EllipseMapObject) {
-//                g2d.draw(tx.createTransformedShape(((EllipseMapObject) object).getEllipse()));
-//            } else if(object instanceof PolygonMapObject) {
-//                g2d.draw(tx.createTransformedShape(((PolygonMapObject) object).getPolygon()));
-//            }
-//        }
-//    }
-
     @Override
     public void render(Graphics2D g2d, Map map) {
+        AnimatedTiledMapTile.updateAnimationBaseTime();
+
         for(MapLayer layer : map.getMap().getLayers()) {
             if(!layer.isVisible()) continue;
 
             if(layer instanceof TiledMapTileLayer) {
                 renderTileLayer(g2d, map, (TiledMapTileLayer) layer);
-            } else {
-                // TODO: Add support for other layers
-                //renderObjectGroup(g2d, map, layer);
-
             }
-
         }
     }
 }

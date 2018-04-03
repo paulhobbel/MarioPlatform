@@ -1,7 +1,6 @@
 package me.paulhobbel.engine.window;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class GameWindow extends JFrame {
     private GamePanel panel;

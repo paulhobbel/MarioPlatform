@@ -2,23 +2,32 @@ package me.paulhobbel.engine.map.tiled;
 
 import java.awt.image.BufferedImage;
 
-public class TiledMapTile {
+public abstract class TiledMapTile {
     private int id;
-    private BufferedImage image;
 
-    public int getId() {
-        return id;
-    }
-
+    /**
+     * Set the id of the tile.
+     * @param id The id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
-    public BufferedImage getImage() {
-        return image;
+    /**
+     * @return the tile id.
+     */
+    public int getId() {
+        return id;
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
+    /**
+     * Set the image of the tile.
+     * @param image The image
+     */
+    public abstract void setImage(BufferedImage image);
+
+    /**
+     * @return the tile image.
+     */
+    public abstract BufferedImage getImage();
 }

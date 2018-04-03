@@ -31,6 +31,8 @@ public class GameObject {
 
     public void resume() {}
 
+    public void pause() {}
+
     /**
      * Update the game object
      * @param elapsedTime Elapsed time since last update
@@ -40,8 +42,6 @@ public class GameObject {
 
     public AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
-
-        //System.out.println(body.getTransform().getTranslationX());
 
         tx.translate(
                 body.getTransform().getTranslationX() * Engine.PPM,
