@@ -7,19 +7,19 @@ import me.paulhobbel.engine.physics.box2d.BodyDef;
 import me.paulhobbel.engine.physics.box2d.FixtureDef;
 import me.paulhobbel.engine.physics.box2d.Geometry;
 import me.paulhobbel.marioplatform.MarioGame;
-import me.paulhobbel.marioplatform.entities.Player.State;
+import me.paulhobbel.marioplatform.entities.Mario.State;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 
-public class Player extends Entity<State> {
+public class Mario extends Entity<State> {
     public enum State {
         IDLE, WALKING, JUMPING, FALLING
     }
 
-    public Player(Vec2 position) {
+    public Mario(Vec2 position) {
         super(position, 0, "/sprites/mario.png", 12, 1);
 
         addAnimation(State.IDLE, 0, new int[] { 0 }, PlayMode.NORMAL);
@@ -46,6 +46,7 @@ public class Player extends Entity<State> {
                 MarioGame.COIN_BIT |
                 MarioGame.ENEMY_BIT |
                 MarioGame.OBJECT_BIT |
+                MarioGame.END_BIT |
                 MarioGame.ENEMY_HEAD_BIT;
 
         fdef.shape = Geometry.createCircle(6 * 3 / Engine.PPM);

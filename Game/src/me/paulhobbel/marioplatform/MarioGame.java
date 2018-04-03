@@ -7,10 +7,9 @@ import me.paulhobbel.engine.hud.Hud;
 import me.paulhobbel.engine.hud.HudManager;
 import me.paulhobbel.engine.hud.Label;
 import me.paulhobbel.marioplatform.collision.WorldContactListener;
-import me.paulhobbel.marioplatform.entities.Goomba;
+import me.paulhobbel.marioplatform.maps.Level;
 import me.paulhobbel.marioplatform.maps.Level1;
-import me.paulhobbel.marioplatform.entities.Player;
-import org.jbox2d.common.Vec2;
+import me.paulhobbel.marioplatform.maps.Level2;
 
 import java.awt.*;
 
@@ -24,6 +23,7 @@ public class MarioGame extends Application {
     public static final short ENEMY_BIT = 32;
     public static final short OBJECT_BIT = 64;
     public static final short ENEMY_HEAD_BIT = 128;
+    public static final short END_BIT = 256;
 
     private static MarioGame instance;
 
@@ -35,6 +35,7 @@ public class MarioGame extends Application {
     private Label scoreLabel;
     private Label worldLabel;
     private Label timeLabel;
+    private Level currentLevel;
 
     private double timeCount = 0;
     private int worldTimer = 300;
@@ -49,8 +50,7 @@ public class MarioGame extends Application {
 
         world.getPhysicsWorld().setContactListener(new WorldContactListener());
 
-        world.addObject(new Level1());
-        //world.addObject(new Player(new Vec2(250/Engine.PPM, 576 * 3 /Engine.PPM)));
+        setLevel(new Level1());
 
         Hud sceneHud = new Hud();
 
@@ -84,5 +84,22 @@ public class MarioGame extends Application {
 
     public void addScore(int value) {
         score += value;
+    }
+
+    public void setLevel(Level level) {
+        currentLevel = level;
+        GameWorld world = Engine.getInstance().getActiveWorld();
+        reset();
+        world.addObject(currentLevel);
+    }
+
+    public void reset() {
+        score = 0;
+        worldTimer = 300;
+        timeCount = 0;
+    }
+
+    public Level getLevel() {
+        return currentLevel;
     }
 }

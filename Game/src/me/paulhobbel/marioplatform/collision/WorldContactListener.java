@@ -47,6 +47,10 @@ public class WorldContactListener implements ContactListener {
             case MarioGame.MARIO_BIT | MarioGame.ENEMY_BIT:
                 System.out.println("Mario died!");
                 Engine.getInstance().stop();
+                break;
+            case MarioGame.MARIO_BIT | MarioGame.END_BIT:
+                MarioGame.getInstance().getLevel().onLevelEnd();
+                break;
         }
     }
 

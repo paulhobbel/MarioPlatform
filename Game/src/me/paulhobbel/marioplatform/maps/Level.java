@@ -1,27 +1,26 @@
 package me.paulhobbel.marioplatform.maps;
 
-import me.paulhobbel.engine.core.GameObject;
 import me.paulhobbel.engine.map.MapLayer;
 import me.paulhobbel.engine.map.MapObject;
 import me.paulhobbel.engine.objects.Map;
+import me.paulhobbel.marioplatform.MarioGame;
 import me.paulhobbel.marioplatform.entities.Goomba;
-import me.paulhobbel.marioplatform.entities.Player;
-import me.paulhobbel.marioplatform.objects.Brick;
-import me.paulhobbel.marioplatform.objects.Coin;
-import me.paulhobbel.marioplatform.objects.Ground;
-import me.paulhobbel.marioplatform.objects.Pipe;
+import me.paulhobbel.marioplatform.entities.Mario;
+import me.paulhobbel.marioplatform.objects.*;
 import org.jbox2d.common.Vec2;
 
-class Level extends Map {
+public abstract class Level extends Map {
     Level(String mapFile) {
         super(mapFile);
 
+        world.resetWorld();
         loadObjects();
 
         setScale(3);
     }
 
     private void loadObjects() {
+
         for(MapLayer layer : getMap().getLayers()) {
             for(MapObject object : layer.getObjects()) {
                 String type = object.getProperties().get("type", String.class);
@@ -47,7 +46,10 @@ class Level extends Map {
                         world.addObject(new Goomba(position));
                         break;
                     case "Mario":
-                        world.addObject(new Player(position));
+                        world.addObject(new Mario(position));
+                        break;
+                    case "End":
+                        new End(object.getShape().getBounds());
                         break;
                     default:
 //                        GameObject gameObject = new GameObject(position);
@@ -59,4 +61,6 @@ class Level extends Map {
             }
         }
     }
+
+    public abstract void onLevelEnd();
 }

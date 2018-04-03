@@ -2,6 +2,7 @@ package me.paulhobbel.engine.core;
 
 import me.paulhobbel.engine.graphics.Camera;
 import me.paulhobbel.engine.graphics.renderer.DebugRenderer;
+import me.paulhobbel.engine.physics.box2d.Body;
 import me.paulhobbel.engine.physics.box2d.World;
 import org.jbox2d.common.Vec2;
 
@@ -29,6 +30,17 @@ public class GameWorld {
     public void removeObject(GameObject object) {
         objects.remove(object);
         object.pause();
+    }
+
+    public void resetWorld() {
+        for(GameObject object : objects) {
+            object.pause();
+        }
+        objects.clear();
+        camera.getPosition().setLocation(0, 0);
+        for(Body body : physicsWorld.getBodyList()) {
+            physicsWorld.destroyBody(body);
+        }
     }
 
     public Camera getCamera() {

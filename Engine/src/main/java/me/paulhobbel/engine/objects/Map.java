@@ -41,10 +41,10 @@ public class Map extends GameObject {
         super.update(elapsedTime);
     }
 
-    //    @Override
-//    public void pause() {
-//        MapRenderer.getInstance().setMap(null);
-//    }
+    @Override
+    public void pause() {
+        MapRenderer.getInstance().setMap(null);
+    }
 
     public TiledMap getMap() {
         return map;
