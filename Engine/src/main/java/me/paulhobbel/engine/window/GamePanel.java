@@ -2,6 +2,7 @@ package me.paulhobbel.engine.window;
 
 import me.paulhobbel.engine.core.Engine;
 import me.paulhobbel.engine.graphics.renderer.DebugRenderer;
+import me.paulhobbel.engine.graphics.renderer.HudRenderer;
 import me.paulhobbel.engine.graphics.renderer.MapRenderer;
 import me.paulhobbel.engine.graphics.renderer.SpriteRenderer;
 
@@ -53,7 +54,6 @@ public class GamePanel extends JPanel {
         g2d.setClip(new Rectangle2D.Double(0, 0, width, height));
 
         AffineTransform originalTransform = g2d.getTransform();
-
         g2d.setTransform(Engine.getInstance().getActiveWorld().getCamera().getTransform());
 
         if(displayMap.isSelected())
@@ -66,6 +66,8 @@ public class GamePanel extends JPanel {
             DebugRenderer.getInstance().render(g2d);
 
         g2d.setTransform(originalTransform);
+
+        HudRenderer.getInstance().render(g2d);
 
         Toolkit.getDefaultToolkit().sync();
     }

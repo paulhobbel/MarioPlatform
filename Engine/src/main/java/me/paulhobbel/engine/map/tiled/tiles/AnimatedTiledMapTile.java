@@ -29,10 +29,6 @@ public class AnimatedTiledMapTile extends TiledMapTile {
         for(int delay : tileDelays) {
             totalDelay += delay;
         }
-
-        System.out.println("Delays: " + Arrays.toString(tileDelays));
-        System.out.println("Frames: " + Arrays.toString(tileFrames));
-        System.out.println("Total Delay: " + totalDelay);
     }
 
     public int getCurrentFrameIndex () {
@@ -45,8 +41,6 @@ public class AnimatedTiledMapTile extends TiledMapTile {
         }
 
         throw new RuntimeException("Could not determine current animation frame in AnimatedTiledMapTile. This should never happen!");
-//        throw new GdxRuntimeException(
-//                "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen.");
     }
 
     public TiledMapTile getCurrentFrame () {

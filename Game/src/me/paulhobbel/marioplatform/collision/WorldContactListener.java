@@ -1,5 +1,6 @@
 package me.paulhobbel.marioplatform.collision;
 
+import me.paulhobbel.engine.core.Engine;
 import me.paulhobbel.engine.physics.box2d.Contact;
 import me.paulhobbel.engine.physics.box2d.ContactListener;
 import me.paulhobbel.engine.physics.box2d.Fixture;
@@ -39,13 +40,13 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((Goomba) fixB.getUserData()).reverseVelocity(true, false);
                 break;
-            case MarioGame.ENEMY_BIT :
-                //if(fixA.getFilterData().categoryBits == MarioGame.ENEMY_BIT)
+            case MarioGame.ENEMY_BIT:
                     ((Goomba) fixA.getUserData()).reverseVelocity(true, false);
                     ((Goomba) fixB.getUserData()).reverseVelocity(true, false);
                 break;
             case MarioGame.MARIO_BIT | MarioGame.ENEMY_BIT:
                 System.out.println("Mario died!");
+                Engine.getInstance().stop();
         }
     }
 

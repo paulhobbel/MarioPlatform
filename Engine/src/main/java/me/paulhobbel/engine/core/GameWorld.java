@@ -16,7 +16,7 @@ public class GameWorld {
 
     GameWorld() {
         camera = new Camera();
-        physicsWorld = new World(new Vec2(0f, 9.8f), true);
+        physicsWorld = new World(new Vec2(0f, 9.8f), false);
         DebugRenderer.getInstance().setScale(Engine.PPM);
         DebugRenderer.getInstance().setWorld(physicsWorld);
     }

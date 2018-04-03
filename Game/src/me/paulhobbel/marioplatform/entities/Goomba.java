@@ -30,14 +30,14 @@ public class Goomba extends Entity<State> {
         setAnimation(State.WALKING);
         setScale(3);
 
-        velocity = new Vec2(1, 0);
+        velocity = new Vec2(1f, 0);
     }
 
     @Override
     protected void defineBody(Vec2 position) {
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
-        def.position.set((position.x + 3) * 3f / Engine.PPM, (position.y + 3) * 3f / Engine.PPM);
+        def.position.set((position.x + 8) * 3f / Engine.PPM, (position.y + 10) * 3f / Engine.PPM);
         body = world.getPhysicsWorld().createBody(def);
 
         FixtureDef fdef = new FixtureDef();
@@ -63,6 +63,8 @@ public class Goomba extends Entity<State> {
         fdef.restitution = 0.5f;
         fdef.filter.categoryBits = MarioGame.ENEMY_HEAD_BIT;
         body.createFixture(fdef).setUserData(this);
+
+        body.setActive(false);
     }
 
     @Override
@@ -78,6 +80,15 @@ public class Goomba extends Entity<State> {
             // TODO: Make it possible to remove a gameobject from the world
             pause();
         } else if(!destroyed) {
+            double cameraX = Engine.getInstance().getActiveWorld().getCamera().getTransform().getTranslateX();
+            double bodyX = body.getTransform().getTranslationX() * Engine.PPM;
+
+            if(Math.abs(bodyX + cameraX) < 950) {
+                body.setActive(true);
+            } else {
+                body.setActive(false);
+            }
+
             body.setLinearVelocity(velocity.x, body.getLinearVelocity().y);
         }
     }

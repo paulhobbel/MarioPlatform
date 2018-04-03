@@ -149,7 +149,7 @@ public class Body {
     }
 
     public void setActive(boolean flag) {
-        body.setAwake(flag);
+        body.setActive(flag);
     }
 
     public boolean isActive() {

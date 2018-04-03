@@ -19,8 +19,9 @@ public class Coin extends InteractiveObject {
 
     @Override
     public void onHeadHitEnter() {
-        System.out.println("Collision: Coin");
         getCell().setTile(tileSet.getTile(28));
+
+        MarioGame.getInstance().addScore(200);
     }
 
     @Override

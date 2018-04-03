@@ -977,7 +977,7 @@
                  "type":"Goomba",
                  "visible":true,
                  "width":16,
-                 "x":876,
+                 "x":868,
                  "y":176
                 }, 
                 {
@@ -1021,7 +1021,7 @@
                  "type":"Goomba",
                  "visible":true,
                  "width":16,
-                 "x":1572,
+                 "x":1576,
                  "y":176
                 }, 
                 {
@@ -1032,7 +1032,7 @@
                  "type":"Goomba",
                  "visible":true,
                  "width":16,
-                 "x":1552,
+                 "x":1548,
                  "y":176
                 }, 
                 {
@@ -1043,7 +1043,7 @@
                  "type":"Goomba",
                  "visible":true,
                  "width":16,
-                 "x":2084,
+                 "x":2096,
                  "y":176
                 }, 
                 {
@@ -1076,7 +1076,7 @@
                  "type":"Goomba",
                  "visible":true,
                  "width":16,
-                 "x":2008,
+                 "x":1996,
                  "y":176
                 }, 
                 {
@@ -1087,7 +1087,7 @@
                  "type":"Goomba",
                  "visible":true,
                  "width":16,
-                 "x":2804,
+                 "x":2796,
                  "y":176
                 }, 
                 {
@@ -1099,6 +1099,17 @@
                  "visible":true,
                  "width":16,
                  "x":2828,
+                 "y":176
+                }, 
+                {
+                 "height":16,
+                 "id":125,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Mario",
+                 "visible":true,
+                 "width":16,
+                 "x":48,
                  "y":176
                 }],
          "opacity":1,
@@ -1117,7 +1128,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":125,
+ "nextobjectid":126,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.2",

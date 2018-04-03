@@ -134,8 +134,6 @@ public class TiledMapLoader {
                 if(tile != null && tileObject.containsKey("animation")) {
                     JsonArray animations = tileObject.getJsonArray("animation");
 
-                    System.out.println(animations);
-
                     int[] delays = new int[animations.size()];
                     StaticTiledMapTile[] frames = new StaticTiledMapTile[animations.size()];
 
@@ -152,8 +150,6 @@ public class TiledMapLoader {
                 }
             }
         }
-
-        System.out.println(tileset);
 
         // TODO: Read tileset and tile properties
 

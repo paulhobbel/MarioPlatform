@@ -5,6 +5,7 @@ import me.paulhobbel.engine.map.MapLayer;
 import me.paulhobbel.engine.map.MapObject;
 import me.paulhobbel.engine.objects.Map;
 import me.paulhobbel.marioplatform.entities.Goomba;
+import me.paulhobbel.marioplatform.entities.Player;
 import me.paulhobbel.marioplatform.objects.Brick;
 import me.paulhobbel.marioplatform.objects.Coin;
 import me.paulhobbel.marioplatform.objects.Ground;
@@ -44,6 +45,9 @@ class Level extends Map {
                         break;
                     case "Goomba":
                         world.addObject(new Goomba(position));
+                        break;
+                    case "Mario":
+                        world.addObject(new Player(position));
                         break;
                     default:
 //                        GameObject gameObject = new GameObject(position);

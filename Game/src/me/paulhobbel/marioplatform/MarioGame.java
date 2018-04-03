@@ -1,13 +1,20 @@
 package me.paulhobbel.marioplatform;
 
+import me.paulhobbel.engine.core.Application;
 import me.paulhobbel.engine.core.Engine;
 import me.paulhobbel.engine.core.GameWorld;
+import me.paulhobbel.engine.hud.Hud;
+import me.paulhobbel.engine.hud.HudManager;
+import me.paulhobbel.engine.hud.Label;
 import me.paulhobbel.marioplatform.collision.WorldContactListener;
+import me.paulhobbel.marioplatform.entities.Goomba;
 import me.paulhobbel.marioplatform.maps.Level1;
 import me.paulhobbel.marioplatform.entities.Player;
 import org.jbox2d.common.Vec2;
 
-public class MarioGame {
+import java.awt.*;
+
+public class MarioGame extends Application {
 
     public static final short DEFAULT_BIT = 1;
     public static final short MARIO_BIT = 2;
@@ -18,24 +25,64 @@ public class MarioGame {
     public static final short OBJECT_BIT = 64;
     public static final short ENEMY_HEAD_BIT = 128;
 
-    public MarioGame() {
-        Engine engine = Engine.getInstance();
-        engine.settings.width = 912;
-        engine.settings.height = 672;
-        engine.settings.scale = 4f;
-        engine.settings.fps = 60;
+    private static MarioGame instance;
 
-        GameWorld world = engine.getActiveWorld();
+    public static MarioGame getInstance() {
+        if(instance == null) instance = new MarioGame();
+        return instance;
+    }
+
+    private Label scoreLabel;
+    private Label worldLabel;
+    private Label timeLabel;
+
+    private double timeCount = 0;
+    private int worldTimer = 300;
+
+    private int score = 0;
+
+    private MarioGame() {}
+
+    @Override
+    public void init() {
+        GameWorld world = Engine.getInstance().getActiveWorld();
 
         world.getPhysicsWorld().setContactListener(new WorldContactListener());
 
         world.addObject(new Level1());
-        world.addObject(new Player(new Vec2(250/Engine.PPM, 576 * 3 /Engine.PPM)));
+        //world.addObject(new Player(new Vec2(250/Engine.PPM, 576 * 3 /Engine.PPM)));
 
-        engine.start();
+        Hud sceneHud = new Hud();
+
+        sceneHud.addElement(new Label(50, 50, "MARIO", new Label.LabelStyle(new Font("arial", Font.PLAIN, 40), Color.WHITE)));
+        sceneHud.addElement(scoreLabel = new Label(50, 90, String.format("%06d", score), new Label.LabelStyle(new Font("arial", Font.PLAIN, 40), Color.WHITE)));
+
+        sceneHud.addElement(worldLabel = new Label(340, 50, "WORLD 1 - 1", new Label.LabelStyle(new Font("arial", Font.PLAIN, 40), Color.WHITE)));
+
+        sceneHud.addElement(new Label(753, 50, "TIME", new Label.LabelStyle(new Font("arial", Font.PLAIN, 40), Color.WHITE)));
+        sceneHud.addElement(timeLabel = new Label(770, 90, String.format("%03d", worldTimer), new Label.LabelStyle(new Font("arial", Font.PLAIN, 40), Color.WHITE)));
+
+        HudManager.getInstance().addHud("Scene", sceneHud);
     }
 
-    public static void main(String[] args) {
-        new MarioGame();
+    @Override
+    public void update(double elapsedTime) {
+        timeCount += elapsedTime;
+
+        if(timeCount >= 1) {
+            worldTimer--;
+            timeLabel.setText(String.format("%03d", worldTimer));
+            timeCount = 0;
+        }
+
+        scoreLabel.setText(String.format("%06d", score));
+
+        if(worldTimer <= 0) {
+            Engine.getInstance().stop();
+        }
+    }
+
+    public void addScore(int value) {
+        score += value;
     }
 }
